@@ -4,48 +4,42 @@
 
 @font-face {
   font-family: 'Be Vietnam Pro';
-  src: url('/assets/fonts/Be_Vietnam_Pro/BeVietnamPro-Regular.ttf')
-    format('truetype');
+  src: url('/assets/fonts/Be_Vietnam_Pro/BeVietnamPro-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Be Vietnam Pro';
-  src: url('/assets/fonts/Be_Vietnam_Pro/BeVietnamPro-Medium.ttf')
-    format('truetype');
+  src: url('/assets/fonts/Be_Vietnam_Pro/BeVietnamPro-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Be Vietnam Pro';
-  src: url('/assets/fonts/Be_Vietnam_Pro/BeVietnamPro-SemiBold.ttf')
-    format('truetype');
+  src: url('/assets/fonts/Be_Vietnam_Pro/BeVietnamPro-SemiBold.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Cormorant Garamond';
-  src: url('/assets/fonts/Cormorant_Garamond/static/CormorantGaramond-Regular.ttf')
-    format('truetype');
+  src: url('/assets/fonts/Cormorant_Garamond/static/CormorantGaramond-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Cormorant Garamond';
-  src: url('/assets/fonts/Cormorant_Garamond/static/CormorantGaramond-Medium.ttf')
-    format('truetype');
+  src: url('/assets/fonts/Cormorant_Garamond/static/CormorantGaramond-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Cormorant Garamond';
-  src: url('/assets/fonts/Cormorant_Garamond/static/CormorantGaramond-SemiBold.ttf')
-    format('truetype');
+  src: url('/assets/fonts/Cormorant_Garamond/static/CormorantGaramond-SemiBold.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
 }
@@ -53,6 +47,11 @@
 html,
 body {
   font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+main {
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .font-display {

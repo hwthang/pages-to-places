@@ -13,7 +13,8 @@
           "standalone": true,
           "inlineTemplate": false,
           "inlineStyle": false,
-          "type": "component"
+          "type": "component",
+          "skipTests": true
         }
       },
       "root": "",
