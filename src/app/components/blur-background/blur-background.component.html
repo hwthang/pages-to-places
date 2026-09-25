@@ -1,0 +1,31 @@
+<div class="cinematic-bg absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+
+  <!-- Main image -->
+  <div
+    class="cinematic-image absolute inset-0 scale-110 bg-cover bg-center"
+    [style.background-image]="'url(' + image() + ')'"
+    [style.filter]="'blur(' + blur() + 'px)'"
+  ></div>
+
+  <!-- Dark cinematic overlay -->
+  <div class="absolute inset-0 bg-black/35"></div>
+
+  <!-- Center light -->
+  <div
+    class="absolute inset-0
+           bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.15)_45%,rgba(0,0,0,0.75)_100%)]"
+  ></div>
+
+  <!-- Cinematic vertical gradient -->
+  <div
+    class="absolute inset-0
+           bg-gradient-to-b
+           from-black/50
+           via-transparent
+           to-black/80"
+  ></div>
+
+  <!-- Film grain -->
+  <div class="film-grain absolute inset-0"></div>
+
+</div>

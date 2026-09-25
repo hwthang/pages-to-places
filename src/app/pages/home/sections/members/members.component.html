@@ -1,0 +1,61 @@
+<section id="members" class="members-section relative min-h-screen overflow-hidden bg-[#111] px-6 py-24 md:px-10">
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
+  <div class="members-header mx-auto max-w-7xl">
+    <p class="members-eyebrow mb-5 font-sans text-xs uppercase tracking-[0.35em] text-white/40">Những người thực hiện</p>
+
+    <div class="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+      <h2 class="members-title max-w-3xl font-display text-6xl font-medium italic leading-[0.9] text-white md:text-8xl">Thành viên</h2>
+
+      <p class="members-introduction max-w-md font-sans text-sm leading-7 text-white/50 md:text-base">
+        Một nhóm nhỏ cùng nhau đưa những trang sách bước ra khỏi trang giấy và trở thành những địa điểm có thể khám phá.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- =====================================================
+       MEMBER GRID
+       ===================================================== -->
+
+  <div class="members-grid mx-auto mt-20 grid max-w-7xl grid-cols-1 gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4 lg:gap-y-20">
+
+    @for (member of teamMembers; track member.name; let i = $index) {
+      <article class="member-card group">
+        <!-- ===============================================
+         IMAGE
+         =============================================== -->
+
+        <div class="member-image-wrapper relative aspect-[4/5] overflow-hidden bg-white/5">
+          <img [src]="member.image" [alt]="member.name" class="member-image h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
+
+          <!-- Hover overlay -->
+
+          <div class="member-overlay absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/20"></div>
+
+          <!-- Number -->
+
+          <span class="member-number absolute left-4 top-4 font-sans text-xs tracking-[0.2em] text-white/60">
+            {{ (i + 1).toString().padStart(2, '0') }}
+          </span>
+        </div>
+
+        <!-- ===============================================
+         INFORMATION
+         =============================================== -->
+
+        <div class="member-info mt-5">
+          <h3 class="member-name font-display text-2xl italic text-white transition-transform duration-500 group-hover:translate-x-1">
+            {{ member.name }}
+          </h3>
+
+          <p class="member-role mt-2 font-sans text-[10px] uppercase tracking-[0.25em] text-white/40">
+            {{ member.role }}
+          </p>
+        </div>
+      </article>
+    }
+  </div>
+</section>

@@ -1,0 +1,104 @@
+<section id="book" class="relative flex min-h-screen items-center justify-center overflow-hidden px-6 py-20 md:py-0">
+  <!-- Background -->
+  <app-blur-background image="/assets/images/book-cover.webp" [blur]="20" [overlay]="0.45" />
+
+  <!-- Content -->
+  <div class="book-content relative z-10 flex flex-col items-center justify-center gap-12 lg:flex-row lg:gap-24">
+    <!-- BOOK -->
+    <div class="book-wrapper book-book">
+      <div class="book">
+        <img src="/assets/images/book-cover.webp" alt="Nhắm mắt thấy Paris" class="book-cover" />
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="max-w-2xl text-white">
+      <!-- Eyebrow -->
+      <p class="book-eyebrow mb-5 font-sans text-sm uppercase tracking-[0.35em] text-white/60">Một câu chuyện về Paris</p>
+
+      <!-- Title -->
+      <h1 class="book-title font-display text-7xl font-medium italic leading-[0.9]">Nhắm mắt thấy Paris</h1>
+
+      <!-- AUTHOR -->
+     <button
+  type="button"
+  (click)="scrollToAuthor()"
+  aria-label="Xem thêm về tác giả Dương Thụy"
+  class="book-author group relative mt-8
+         flex cursor-pointer
+         items-center gap-4
+         text-left
+         transition-all duration-500
+         active:scale-[0.97]"
+>
+  <!-- =====================================================
+       HOVER GLOW
+       ===================================================== -->
+
+  <span
+    class="absolute -inset-x-4 -inset-y-3 -z-10
+           rounded-full
+           bg-white/0
+           blur-xl
+           transition-all duration-500
+           group-hover:bg-white/10"
+  ></span>
+
+
+  <!-- =====================================================
+       LINE
+       ===================================================== -->
+
+  <span
+    class="h-px w-12
+           bg-white/50
+           transition-all duration-500
+           group-hover:w-20
+           group-hover:bg-white"
+  ></span>
+
+
+  <!-- =====================================================
+       AUTHOR
+       ===================================================== -->
+
+  <span
+    class="font-display text-2xl
+           text-white/90
+           transition-all duration-500
+           group-hover:translate-x-1
+           group-hover:text-white"
+  >
+    Dương Thụy
+  </span>
+
+
+  <!-- =====================================================
+       ARROW
+       ===================================================== -->
+
+  <span
+    class="flex h-7 w-7
+           items-center justify-center
+           rounded-full
+           border border-white/20
+           transition-all duration-500
+           group-hover:translate-x-2
+           group-hover:border-white/60
+           group-hover:bg-white
+           group-hover:text-black"
+  >
+    <i
+      class="fa-solid fa-chevron-right text-[9px]"
+    ></i>
+  </span>
+
+</button>
+
+      <!-- Description -->
+      <p class="book-description mt-8 max-w-lg font-sans text-base leading-7 text-white/70">
+        Một Paris vừa xa lạ vừa thân quen, nơi những con người trẻ tuổi đi qua những cuộc gặp gỡ, những rung động và những ký ức không dễ gọi tên.
+      </p>
+    </div>
+  </div>
+</section>

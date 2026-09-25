@@ -1,0 +1,112 @@
+/* =========================================================
+   AUTHOR BACKGROUND
+   ========================================================= */
+
+.author-background {
+
+  /*
+   * Tạo ánh sáng từ trung tâm.
+   *
+   * Ở giữa:
+   * rgba(255,255,255,0.16)
+   *
+   * Ra ngoài:
+   * rgba(0,0,0,0)
+   *
+   * Cuối cùng:
+   * black
+   *
+   * Vì section có bg-black nên viền sẽ
+   * tự nhiên chuyển về đen.
+   */
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(255, 255, 255, 0.16) 0%,
+      rgba(255, 255, 255, 0.10) 20%,
+      rgba(255, 255, 255, 0.05) 40%,
+      rgba(0, 0, 0, 0.15) 65%,
+      rgba(0, 0, 0, 0.75) 85%,
+      #000 100%
+    );
+
+}
+
+
+/* =========================================================
+   CENTER GLOW
+   ========================================================= */
+
+.author-glow {
+
+  /*
+   * Glow mềm phía sau avatar.
+   */
+  background: rgba(247, 245, 245, 0.12);
+
+  /*
+   * Nếu muốn sáng hơn:
+   *
+   * 0.12 → nhẹ
+   * 0.18 → vừa
+   * 0.25 → khá sáng
+   * 0.35 → rất sáng
+   */
+
+  filter: blur(120px);
+
+}
+
+
+/* =========================================================
+   AVATAR
+   ========================================================= */
+
+.author-avatar {
+
+  /*
+   * Glow xung quanh avatar.
+   */
+  box-shadow:
+    0 0 40px rgba(255, 255, 255, 0.08),
+    0 0 100px rgba(6, 6, 6, 0.12);
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  .author-background {
+
+    /*
+     * Trên mobile thu nhỏ vùng sáng
+     * để background không bị quá trắng.
+     */
+    background:
+      radial-gradient(
+        ellipse at center,
+        rgba(255, 255, 255, 0.14) 0%,
+        rgba(255, 255, 255, 0.07) 30%,
+        rgba(0, 0, 0, 0.35) 65%,
+        #000 100%
+      );
+
+  }
+
+
+  .author-glow {
+
+    /*
+     * Glow nhỏ hơn trên mobile.
+     */
+    width: 350px;
+    height: 350px;
+
+    filter: blur(90px);
+  }
+
+}

@@ -1,0 +1,70 @@
+<section id="about" class="about-section relative flex min-h-screen items-center justify-center overflow-hidden bg-white px-6 py-20">
+  <!-- =====================================================
+       SECTION NUMBER
+       ===================================================== -->
+
+  <span class="about-number absolute left-6 top-8 font-sans text-xs tracking-[0.3em] text-black/30 md:left-10"> </span>
+
+  <!-- =====================================================
+       CONTENT
+       ===================================================== -->
+
+  <div class="about-content relative z-10 grid w-full max-w-7xl gap-16 lg:grid-cols-2 lg:items-center">
+
+    <!-- ===================================================
+     LEFT — TITLE
+     =================================================== -->
+
+    <div class="about-heading">
+      <p class="about-eyebrow mb-6 font-sans text-xs uppercase tracking-[0.35em] text-black/40">Pages To Place</p>
+
+      <h2 class="about-title max-w-3xl font-display text-6xl font-medium italic leading-[0.9] text-black md:text-8xl">
+        Từ những
+        <br />
+        trang sách
+        <br />
+        đến những
+        <br />
+        nơi chốn.
+      </h2>
+    </div>
+
+    <!-- ===================================================
+     RIGHT — DESCRIPTION
+     =================================================== -->
+
+    <div class="about-info max-w-xl lg:ml-auto">
+      <!-- Divider -->
+
+      <div class="about-divider mb-8 h-px w-20 bg-black/30"></div>
+
+      <!-- Main description -->
+
+      <p class="about-description font-sans text-lg leading-8 text-black/60 md:text-xl">
+        Pages To Place là nơi những trang sách được kết nối với những địa điểm ngoài đời thực. Từ một câu chuyện, một ký ức hay một cái tên xuất hiện trong sách, chúng tôi đưa bạn đến chính nơi câu
+        chuyện ấy từng đi qua.
+      </p>
+
+      <!-- Secondary description -->
+
+      <p class="about-description mt-6 font-sans text-base leading-8 text-black/50">
+        Với
+        <span class="text-black"> Nhắm mắt thấy Paris </span>, hành trình bắt đầu từ những trang sách và tiếp tục trên bản đồ — nơi Paris hiện ra qua từng địa điểm, từng hình ảnh và từng câu chuyện.
+      </p>
+
+      <!-- =================================================
+       CTA
+       ================================================= -->
+
+      <button (click)="scrollToCta()" class="about-link group mt-10 inline-flex items-center gap-5 font-sans text-xs uppercase tracking-[0.25em] text-black">
+        <span class="relative">
+          Khám phá bản đồ
+
+          <span class="absolute -bottom-2 left-0 h-px w-full origin-left scale-x-0 bg-black transition-transform duration-500 group-hover:scale-x-100"></span>
+        </span>
+
+        <i class="fa-solid fa-arrow-right transition-transform duration-500 group-hover:translate-x-2"></i>
+      </button>
+    </div>
+  </div>
+</section>
