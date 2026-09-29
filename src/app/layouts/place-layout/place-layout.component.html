@@ -1,26 +1,18 @@
 <div class="place-layout">
 
-  <!-- =========================================
-       TRANG ĐỊA ĐIỂM
-  ========================================== -->
-
+  <!-- TRANG ĐỊA ĐIỂM -->
   <div class="place-content">
-
     <router-outlet />
-
   </div>
 
-
-  <!-- =========================================
-       NÚT MỞ DANH SÁCH
-  ========================================== -->
-
+  <!-- NÚT MỞ DANH SÁCH -->
   <button
     type="button"
     class="places-trigger"
     (click)="openPlaces()"
+    aria-label="Mở danh sách địa điểm"
+    [attr.aria-expanded]="isOpen"
   >
-
     <span class="trigger-dot"></span>
 
     <span class="trigger-text">
@@ -30,25 +22,27 @@
     <span class="trigger-count">
       {{ places.length }}
     </span>
-
   </button>
 
-
-  <!-- =========================================
-       BỘ CHỌN ĐỊA ĐIỂM
-  ========================================== -->
-
+  <!-- BỘ CHỌN ĐỊA ĐIỂM -->
   @if (isOpen) {
 
-    <div class="place-picker">
+    <div
+      class="place-picker"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Danh sách địa điểm"
+      tabindex="-1"
+      (click)="onPickerClick($event)"
+    >
 
       <!-- Nền mờ -->
-
-      <div class="place-picker-backdrop"></div>
-
+      <div
+        class="place-picker-backdrop"
+        (click)="closePlaces()"
+      ></div>
 
       <!-- Thanh trên -->
-
       <div class="picker-top">
 
         <div class="picker-title">
@@ -63,24 +57,19 @@
 
         </div>
 
-
         <button
           type="button"
           class="picker-close"
           (click)="closePlaces()"
+          aria-label="Đóng danh sách địa điểm"
         >
-
           <span>ĐÓNG</span>
-
           <strong>×</strong>
-
         </button>
 
       </div>
 
-
       <!-- Nội dung chính -->
-
       <div class="place-picker-panel">
 
         <div class="picker-heading">
@@ -92,17 +81,19 @@
           <div class="picker-line"></div>
 
           <span>
-            {{ (activeIndex + 1).toString().padStart(2, '0') }}
+            {{ formatNumber(activeIndex + 1) }}
             /
-            {{ places.length.toString().padStart(2, '0') }}
+            {{ formatNumber(places.length) }}
           </span>
 
         </div>
 
-
         <!-- Danh sách địa điểm -->
-
-        <div class="place-picker-carousel">
+        <div
+          class="place-picker-carousel"
+          role="listbox"
+          aria-label="Danh sách địa điểm"
+        >
 
           @for (
             place of places;
@@ -114,6 +105,8 @@
               type="button"
               class="place-picker-item"
               [class.active]="i === activeIndex"
+              [attr.aria-selected]="i === activeIndex"
+              [attr.tabindex]="i === activeIndex ? 0 : -1"
               (click)="selectPlace(i)"
             >
 
@@ -122,15 +115,15 @@
                 <img
                   [src]="place.images[0]"
                   [alt]="place.name"
+                  draggable="false"
                 />
 
               </div>
 
-
               <div class="place-picker-name">
 
                 <span class="place-number">
-                  {{ (i + 1).toString().padStart(2, '0') }}
+                  {{ formatNumber(i + 1) }}
                 </span>
 
                 <span class="place-name">
@@ -145,9 +138,7 @@
 
         </div>
 
-
         <!-- Hướng dẫn -->
-
         <div class="picker-hint">
 
           <span>↑</span>

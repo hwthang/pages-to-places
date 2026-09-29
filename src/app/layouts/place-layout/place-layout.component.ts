@@ -1,20 +1,6 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  HostListener,
-  OnDestroy,
-  inject,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, inject } from '@angular/core';
 
-import {
-  ActivatedRoute,
-  Router,
-  RouterLink,
-  RouterOutlet,
-} from '@angular/router';
-
-import { Subscription } from 'rxjs';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 
 import { gsap } from 'gsap';
 
@@ -28,9 +14,7 @@ import { IPlace } from '../../core/models/place';
   templateUrl: './place-layout.component.html',
   styleUrl: './place-layout.component.css',
 })
-export class PlaceLayoutComponent
-  implements AfterViewInit, OnDestroy
-{
+export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
   private readonly elementRef = inject(ElementRef);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -43,89 +27,88 @@ export class PlaceLayoutComponent
 
   activeIndex = 0;
 
-  private wheelLocked = false;
+  /*
+   * Chống wheel / swipe liên tục
+   */
+  private navigationLocked = false;
 
-  private wheelTimeout?: ReturnType<typeof setTimeout>;
+  /*
+   * Touch
+   */
+  private touchStartY = 0;
 
-  private routeSubscription?: Subscription;
+  private touchStartX = 0;
 
+  private touchStartTime = 0;
 
-  // =========================================================
-  // INIT
-  // =========================================================
+  /*
+   * Ngưỡng swipe
+   */
+  private readonly swipeThreshold = 45;
+
+  /*
+   * Khoảng thời gian tối thiểu
+   * giữa 2 lần chuyển item
+   */
+  private readonly navigationLockDuration = 500;
+
+  /*
+   * Subscription route
+   */
+  private routeSubscription?: {
+    unsubscribe: () => void;
+  };
+
+  /*
+   * Lưu overflow body trước khi mở picker
+   */
+  private previousBodyOverflow = '';
+
+  /*
+   * =========================================
+   * LIFECYCLE
+   * =========================================
+   */
 
   ngAfterViewInit(): void {
-    this.subscribeToRoute();
-  }
+    this.routeSubscription = this.route.firstChild?.paramMap.subscribe((params) => {
+      const slug = params.get('slug');
 
+      this.currentSlug = slug ?? '';
 
-  // =========================================================
-  // ROUTE
-  // =========================================================
+      const index = this.places.findIndex((place) => place.slug === slug);
 
-  private subscribeToRoute(): void {
-    /*
-     * Lắng nghe :slug của route con.
-     *
-     * Khi chuyển:
-     *
-     * /place/eiffel-tower
-     *        ↓
-     * /place/bercy-park
-     *
-     * PlaceLayoutComponent có thể được Angular reuse,
-     * vì vậy cần subscribe thay vì chỉ dùng snapshot.
-     */
-
-    this.routeSubscription =
-      this.route.firstChild?.paramMap.subscribe((params) => {
-        const slug = params.get('slug');
-
-        if (!slug) {
-          return;
-        }
-
-        this.currentSlug = slug;
-
-        const index = this.places.findIndex(
-          (place) => place.slug === slug,
-        );
-
-        if (index === -1) {
-          console.warn(
-            '[PlaceLayout] Không tìm thấy place:',
-            slug,
-          );
-
-          return;
-        }
-
-        /*
-         * Đồng bộ navigation với URL.
-         */
+      if (index >= 0) {
         this.activeIndex = index;
+      }
 
-        console.log(
-          '[PlaceLayout] Current place:',
-          this.places[index],
-        );
-
-        /*
-         * Đợi Angular render lại item
-         * rồi mới chạy animation.
-         */
+      /*
+       * Route thay đổi khi picker đang mở.
+       * Cập nhật lại vị trí carousel.
+       */
+      if (this.isOpen) {
         requestAnimationFrame(() => {
-          if (this.isOpen) {
-            this.updateItems();
-          }
+          this.updateItems();
         });
-      });
+      }
+    });
   }
 
+  /*
+   * =========================================
+   * FORMAT
+   * =========================================
+   */
 
-  // =========================================================
-  // OPEN
-  // =========================================================
+  formatNumber(value: number): string {
+    return value.toString().padStart(2, '0');
+  }
+
+  /*
+   * =========================================
+   * OPEN
+   * =========================================
+   */
 
   openPlaces(): void {
     if (this.isOpen) {
@@ -134,474 +117,571 @@ export class PlaceLayoutComponent
 
     this.isOpen = true;
 
+    /*
+     * Lưu trạng thái overflow hiện tại
+     */
+    this.previousBodyOverflow = document.body.style.overflow;
+
+    /*
+     * Khóa scroll background
+     */
     document.body.style.overflow = 'hidden';
 
     requestAnimationFrame(() => {
-      this.updateItems();
-
-      const picker =
-        this.elementRef.nativeElement.querySelector(
-          '.place-picker',
-        );
-
-      const panel =
-        this.elementRef.nativeElement.querySelector(
-          '.place-picker-panel',
-        );
+      const picker = this.elementRef.nativeElement.querySelector('.place-picker');
 
       if (picker) {
-        gsap.fromTo(
-          picker,
-          {
-            opacity: 0,
-          },
-          {
-            opacity: 1,
-            duration: 0.45,
-            ease: 'power2.out',
-          },
-        );
+        picker.focus();
       }
 
-      if (panel) {
-        gsap.fromTo(
-          panel,
-          {
-            opacity: 0,
-            scale: 0.96,
-            y: 30,
-          },
-          {
-            opacity: 1,
-            scale: 1,
-            y: 0,
-            duration: 0.7,
-            ease: 'power3.out',
-          },
-        );
-      }
+      this.updateItems();
+
+      this.animateOpen();
     });
   }
 
-
-  // =========================================================
-  // CLOSE
-  // =========================================================
+  /*
+   * =========================================
+   * CLOSE
+   * =========================================
+   */
 
   closePlaces(): void {
     if (!this.isOpen) {
       return;
     }
 
-    const picker =
-      this.elementRef.nativeElement.querySelector(
-        '.place-picker',
-      );
+    const panel = this.elementRef.nativeElement.querySelector('.place-picker-panel');
 
-    const panel =
-      this.elementRef.nativeElement.querySelector(
-        '.place-picker-panel',
-      );
+    const picker = this.elementRef.nativeElement.querySelector('.place-picker');
 
-    const timeline = gsap.timeline({
-      onComplete: () => {
-        this.isOpen = false;
+    /*
+     * Không có DOM thì đóng ngay
+     */
+    if (!panel || !picker) {
+      this.finishClose();
 
-        document.body.style.overflow = '';
-      },
+      return;
+    }
+
+    gsap.to(panel, {
+      opacity: 0,
+
+      scale: 0.96,
+
+      y: 20,
+
+      duration: 0.35,
+
+      ease: 'power2.in',
     });
 
-    if (panel) {
-      timeline.to(
-        panel,
-        {
-          opacity: 0,
-          scale: 0.96,
-          y: 20,
-          duration: 0.3,
-          ease: 'power2.in',
-        },
-      );
+    gsap.to(picker, {
+      opacity: 0,
+
+      duration: 0.4,
+
+      delay: 0.05,
+
+      ease: 'power2.in',
+
+      onComplete: () => {
+        this.finishClose();
+      },
+    });
+  }
+
+  private finishClose(): void {
+    this.isOpen = false;
+
+    /*
+     * Khôi phục scroll body
+     */
+    document.body.style.overflow = this.previousBodyOverflow;
+
+    /*
+     * Reset lock
+     */
+    this.navigationLocked = false;
+  }
+
+  /*
+   * =========================================
+   * OPEN ANIMATION
+   * =========================================
+   */
+
+  private animateOpen(): void {
+    const picker = this.elementRef.nativeElement.querySelector('.place-picker');
+
+    const panel = this.elementRef.nativeElement.querySelector('.place-picker-panel');
+
+    if (!picker || !panel) {
+      return;
     }
 
-    if (picker) {
-      timeline.to(
-        picker,
-        {
-          opacity: 0,
-          duration: 0.25,
-        },
-        '<',
-      );
-    }
+    gsap.fromTo(
+      picker,
+
+      {
+        opacity: 0,
+      },
+
+      {
+        opacity: 1,
+
+        duration: 0.45,
+
+        ease: 'power2.out',
+      },
+    );
+
+    gsap.fromTo(
+      panel,
+
+      {
+        opacity: 0,
+
+        scale: 0.96,
+
+        y: 30,
+      },
+
+      {
+        opacity: 1,
+
+        scale: 1,
+
+        y: 0,
+
+        duration: 0.7,
+
+        ease: 'power3.out',
+      },
+    );
   }
 
-
-  // =========================================================
-  // SELECT PLACE
-  // =========================================================
-
-selectPlace(index: number): void {
-  const place = this.places[index];
-
-  if (!place) {
-    return;
-  }
-
-  // So với slug THẬT của route hiện tại, không phải activeIndex
-  // (activeIndex có thể đã bị nextPlace()/previousPlace() đổi khi user
-  // lăn chuột/bấm phím preview, mà chưa hề navigate).
-  if (place.slug === this.currentSlug) {
-    this.closePlaces();
-    return;
-  }
-
-  this.activeIndex = index;
-
-  this.closePlaces();
-
-  this.router.navigate(['/place', place.slug]);
-}
-
-
-  // =========================================================
-  // NEXT
-  // =========================================================
+  /*
+   * =========================================
+   * NAVIGATION
+   * =========================================
+   */
 
   nextPlace(): void {
+    if (this.navigationLocked) {
+      return;
+    }
+
     if (!this.places.length) {
       return;
     }
 
-    if (
-      this.activeIndex >=
-      this.places.length - 1
-    ) {
+    this.navigationLocked = true;
+
+    if (this.activeIndex >= this.places.length - 1) {
       this.activeIndex = 0;
     } else {
       this.activeIndex++;
     }
 
     this.updateItems();
+
+    this.releaseNavigationLock();
   }
 
-
-  // =========================================================
-  // PREVIOUS
-  // =========================================================
-
   previousPlace(): void {
+    if (this.navigationLocked) {
+      return;
+    }
+
     if (!this.places.length) {
       return;
     }
 
+    this.navigationLocked = true;
+
     if (this.activeIndex <= 0) {
-      this.activeIndex =
-        this.places.length - 1;
+      this.activeIndex = this.places.length - 1;
     } else {
       this.activeIndex--;
     }
 
     this.updateItems();
+
+    this.releaseNavigationLock();
   }
 
+  private releaseNavigationLock(): void {
+    window.setTimeout(() => {
+      this.navigationLocked = false;
+    }, this.navigationLockDuration);
+  }
 
-  // =========================================================
-  // UPDATE CAROUSEL
-  // =========================================================
+  /*
+   * =========================================
+   * SELECT
+   * =========================================
+   */
+
+  selectPlace(index: number): void {
+    if (index < 0 || index >= this.places.length) {
+      return;
+    }
+
+    const selectedPlace = this.places[index];
+
+    if (!selectedPlace) {
+      return;
+    }
+
+    this.activeIndex = index;
+
+    /*
+     * Cập nhật animation trước
+     */
+    this.updateItems();
+
+    /*
+     * Đóng picker
+     */
+    this.closePlaces();
+
+    /*
+     * Navigate Angular.
+     *
+     * Không dùng window.location.assign()
+     * để tránh reload toàn bộ website.
+     */
+    window.location.assign(`/place/${selectedPlace.slug}`);
+  }
+
+  /*
+   * =========================================
+   * GSAP CAROUSEL
+   * =========================================
+   */
 
   private updateItems(): void {
-    const items =
-      this.elementRef.nativeElement.querySelectorAll(
-        '.place-picker-item',
-      );
+    const root = this.elementRef.nativeElement;
+
+    const items = root.querySelectorAll('.place-picker-item');
 
     if (!items.length) {
       return;
     }
 
-    items.forEach(
-      (item: HTMLElement, index: number) => {
-        const distance =
-          this.getCircularDistance(
-            index,
-            this.activeIndex,
-            this.places.length,
-          );
+    items.forEach((item: HTMLElement, index: number) => {
+      const distance = this.getCircularDistance(index, this.activeIndex, this.places.length);
 
-        const direction =
-          this.getCircularDirection(
-            index,
-            this.activeIndex,
-            this.places.length,
-          );
+      const direction = this.getCircularDirection(index, this.activeIndex, this.places.length);
 
-        const position =
-          distance * direction;
+      const position = distance * direction;
 
+      /*
+       * Y
+       */
+      const y = position * 145;
 
-        /*
-         * =====================================
-         * Y POSITION
-         * =====================================
-         */
+      /*
+       * Scale
+       */
+      const scale = Math.max(0.38, 1 - distance * 0.18);
 
-        const y =
-          position * 145;
+      /*
+       * Opacity
+       */
+      const opacity = Math.max(0.08, 1 - distance * 0.25);
 
+      /*
+       * Blur
+       */
+      const blur = distance * 1.8;
 
-        /*
-         * =====================================
-         * SCALE
-         *
-         * Center: 1
-         * Near:   0.82
-         * Far:    0.64
-         * ...
-         * =====================================
-         */
+      /*
+       * Perspective
+       */
+      const x = Math.abs(position) * 8;
 
-        const scale =
-          Math.max(
-            0.38,
-            1 - distance * 0.18,
-          );
+      /*
+       * Rotation
+       */
+      const rotateX = position * -8;
 
+      /*
+       * Layer
+       */
+      const zIndex = 100 - distance;
 
-        /*
-         * =====================================
-         * OPACITY
-         * =====================================
-         */
+      gsap.to(item, {
+        y,
 
-        const opacity =
-          Math.max(
-            0.08,
-            1 - distance * 0.25,
-          );
+        x,
 
+        scale,
 
-        /*
-         * =====================================
-         * BLUR
-         * =====================================
-         */
+        opacity,
 
-        const blur =
-          distance * 1.8;
+        rotateX,
 
+        filter: `blur(${blur}px)`,
 
-        /*
-         * =====================================
-         * X
-         * =====================================
-         */
+        zIndex,
 
-        const x =
-          Math.abs(position) * 8;
+        duration: 0.65,
 
+        ease: 'power3.out',
 
-        /*
-         * =====================================
-         * 3D ROTATION
-         * =====================================
-         */
-
-        const rotateX =
-          position * -8;
-
-
-        /*
-         * =====================================
-         * Z INDEX
-         * =====================================
-         */
-
-        const zIndex =
-          100 - distance;
-
-
-        gsap.to(item, {
-          y,
-          x,
-          scale,
-          opacity,
-          rotateX,
-
-          filter:
-            `blur(${blur}px)`,
-
-          zIndex,
-
-          duration: 0.65,
-
-          ease: 'power3.out',
-
-          overwrite: true,
-        });
-      },
-    );
+        overwrite: true,
+      });
+    });
   }
 
+  /*
+   * =========================================
+   * CIRCULAR POSITION
+   * =========================================
+   */
 
-  // =========================================================
-  // CIRCULAR DISTANCE
-  // =========================================================
+  private getCircularDistance(index: number, active: number, length: number): number {
+    const direct = Math.abs(index - active);
 
-  private getCircularDistance(
-    index: number,
-    active: number,
-    length: number,
-  ): number {
-    const direct =
-      Math.abs(index - active);
+    const wrapped = length - direct;
 
-    const wrapped =
-      length - direct;
-
-    return Math.min(
-      direct,
-      wrapped,
-    );
+    return Math.min(direct, wrapped);
   }
 
-
-  // =========================================================
-  // CIRCULAR DIRECTION
-  // =========================================================
-
-  private getCircularDirection(
-    index: number,
-    active: number,
-    length: number,
-  ): number {
+  private getCircularDirection(index: number, active: number, length: number): number {
     if (index === active) {
       return 0;
     }
 
-    const direct =
-      index - active;
+    const direct = index - active;
 
-    const wrapped =
-      direct > 0
-        ? direct - length
-        : direct + length;
+    const wrapped = direct > 0 ? direct - length : direct + length;
 
-    return Math.abs(direct) <=
-      Math.abs(wrapped)
-      ? Math.sign(direct)
-      : Math.sign(wrapped);
+    return Math.abs(direct) <= Math.abs(wrapped) ? Math.sign(direct) : Math.sign(wrapped);
   }
 
+  /*
+   * =========================================
+   * BACKDROP
+   * =========================================
+   */
 
-  // =========================================================
-  // MOUSE WHEEL
-  // =========================================================
+  onPickerClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
 
-  @HostListener(
-    'window:wheel',
-    ['$event'],
-  )
+    /*
+     * Chỉ xử lý click trực tiếp
+     * vào container.
+     *
+     * Không ảnh hưởng click item/button.
+     */
+    if (target.classList.contains('place-picker')) {
+      this.closePlaces();
+    }
+  }
+
+  /*
+   * =========================================
+   * MOUSE WHEEL
+   * =========================================
+   */
+
+  @HostListener('window:wheel', ['$event'])
   onWheel(event: WheelEvent): void {
     if (!this.isOpen) {
       return;
     }
 
     /*
-     * Không dùng preventDefault().
+     * Không gọi preventDefault().
      *
-     * Tránh:
+     * Tránh lỗi:
      *
      * Unable to preventDefault inside
      * passive event listener
+     *
+     * Body đã bị overflow:hidden,
+     * picker cũng dùng touch-action:none.
      */
 
-    if (this.wheelLocked) {
+    if (Math.abs(event.deltaY) < 10) {
       return;
     }
-
-    /*
-     * Bỏ qua wheel quá nhỏ.
-     */
-    if (
-      Math.abs(event.deltaY) < 20
-    ) {
-      return;
-    }
-
-    this.wheelLocked = true;
 
     if (event.deltaY > 0) {
       this.nextPlace();
     } else {
       this.previousPlace();
     }
-
-    this.wheelTimeout =
-      setTimeout(() => {
-        this.wheelLocked = false;
-      }, 500);
   }
 
+  /*
+   * =========================================
+   * TOUCH START
+   * =========================================
+   */
 
-  // =========================================================
-  // KEYBOARD
-  // =========================================================
+  @HostListener('touchstart', ['$event'])
+  onTouchStart(event: TouchEvent): void {
+    if (!this.isOpen) {
+      return;
+    }
 
-  @HostListener(
-    'window:keydown',
-    ['$event'],
-  )
-  onKeyDown(
-    event: KeyboardEvent,
-  ): void {
+    const touch = event.touches[0];
+
+    if (!touch) {
+      return;
+    }
+
+    this.touchStartY = touch.clientY;
+
+    this.touchStartX = touch.clientX;
+
+    this.touchStartTime = Date.now();
+  }
+
+  /*
+   * =========================================
+   * TOUCH END
+   * =========================================
+   */
+
+  @HostListener('touchend', ['$event'])
+  onTouchEnd(event: TouchEvent): void {
+    if (!this.isOpen) {
+      return;
+    }
+
+    const touch = event.changedTouches[0];
+
+    if (!touch) {
+      return;
+    }
+
+    const deltaY = this.touchStartY - touch.clientY;
+
+    const deltaX = this.touchStartX - touch.clientX;
+
+    const duration = Date.now() - this.touchStartTime;
+
+    /*
+     * Nếu kéo ngang nhiều hơn kéo dọc
+     * thì bỏ qua.
+     */
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      return;
+    }
+
+    /*
+     * Swipe quá nhanh / quá nhỏ
+     */
+    if (Math.abs(deltaY) < this.swipeThreshold) {
+      return;
+    }
+
+    /*
+     * Tránh gesture quá dài
+     */
+    if (duration > 1200) {
+      return;
+    }
+
+    if (deltaY > 0) {
+      /*
+       * Vuốt lên
+       */
+      this.nextPlace();
+    } else {
+      /*
+       * Vuốt xuống
+       */
+      this.previousPlace();
+    }
+  }
+
+  /*
+   * =========================================
+   * KEYBOARD
+   * =========================================
+   */
+
+  @HostListener('window:keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent): void {
     if (!this.isOpen) {
       return;
     }
 
     switch (event.key) {
-
       case 'Escape':
+        event.preventDefault();
+
         this.closePlaces();
+
         break;
 
       case 'ArrowDown':
+
+      case 'PageDown':
+        event.preventDefault();
+
         this.nextPlace();
+
         break;
 
       case 'ArrowUp':
+
+      case 'PageUp':
+        event.preventDefault();
+
         this.previousPlace();
+
         break;
 
+      case 'Home':
+        event.preventDefault();
+
+        this.activeIndex = 0;
+
+        this.updateItems();
+
+        break;
+
+      case 'End':
+        event.preventDefault();
+
+        this.activeIndex = this.places.length - 1;
+
+        this.updateItems();
+
+        break;
     }
   }
 
-
-  // =========================================================
-  // DESTROY
-  // =========================================================
+  /*
+   * =========================================
+   * DESTROY
+   * =========================================
+   */
 
   ngOnDestroy(): void {
     this.routeSubscription?.unsubscribe();
 
-    if (this.wheelTimeout) {
-      clearTimeout(
-        this.wheelTimeout,
-      );
-    }
+    /*
+     * Khôi phục scroll
+     */
+    document.body.style.overflow = this.previousBodyOverflow || '';
 
-    document.body.style.overflow = '';
+    /*
+     * Kill animation
+     */
+    const root = this.elementRef.nativeElement;
 
-    gsap.killTweensOf(
-      '.place-picker',
-    );
+    gsap.killTweensOf(root.querySelector('.place-picker'));
 
-    gsap.killTweensOf(
-      '.place-picker-panel',
-    );
+    gsap.killTweensOf(root.querySelector('.place-picker-panel'));
 
-    gsap.killTweensOf(
-      '.place-picker-item',
-    );
+    gsap.killTweensOf(root.querySelectorAll('.place-picker-item'));
   }
 }

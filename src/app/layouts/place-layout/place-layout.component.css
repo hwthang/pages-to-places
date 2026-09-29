@@ -2,20 +2,17 @@
   display: block;
 }
 
-
 /* =========================================
    LAYOUT
 ========================================= */
 
 .place-layout {
   position: relative;
-
   min-height: 100vh;
 
   background: #080808;
-  color: white;
+  color: #fff;
 }
-
 
 .place-content {
   min-height: 100vh;
@@ -23,14 +20,13 @@
 
 
 /* =========================================
-   TRIGGER
+   PLACES TRIGGER
 ========================================= */
 
 .places-trigger {
   position: fixed;
-
-  left: 32px;
   top: 32px;
+  left: 32px;
 
   z-index: 200;
 
@@ -38,29 +34,29 @@
 
   display: flex;
   align-items: center;
-
   gap: 12px;
 
   padding: 0 18px;
 
   border: 1px solid rgba(255, 255, 255, 0.25);
-
   border-radius: 999px;
 
   background: rgba(10, 10, 10, 0.45);
 
   backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 
-  color: white;
+  color: #fff;
 
   cursor: pointer;
+
+  -webkit-tap-highlight-color: transparent;
 
   transition:
     background 0.3s ease,
     border-color 0.3s ease,
     transform 0.3s ease;
 }
-
 
 .places-trigger:hover {
   background: rgba(255, 255, 255, 0.1);
@@ -70,34 +66,29 @@
   transform: translateY(-2px);
 }
 
-
 .trigger-dot {
   width: 7px;
   height: 7px;
 
+  flex: 0 0 auto;
+
   border-radius: 50%;
 
-  background: white;
+  background: #fff;
 
   box-shadow:
-    0 0 0 4px
-    rgba(255, 255, 255, 0.08);
+    0 0 0 4px rgba(255, 255, 255, 0.08);
 }
-
 
 .trigger-text {
   font-size: 9px;
-
   letter-spacing: 0.25em;
 }
-
 
 .trigger-count {
   padding-left: 10px;
 
-  border-left:
-    1px solid
-    rgba(255, 255, 255, 0.2);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
 
   font-size: 9px;
 
@@ -106,65 +97,64 @@
 
 
 /* =========================================
-   OVERLAY
+   PLACE PICKER / OVERLAY
 ========================================= */
 
 .place-picker {
   position: fixed;
-
   inset: 0;
 
-  z-index: 1000;
+  z-index: 9999;
 
-  perspective: 1200px;
+  width: 100%;
+  height: 100dvh;
+
+  overflow: hidden;
+
+  touch-action: none;
+  overscroll-behavior: none;
+
+  user-select: none;
+  -webkit-user-select: none;
 }
-
 
 .place-picker-backdrop {
   position: absolute;
-
   inset: 0;
 
-  background:
-    rgba(5, 5, 5, 0.72);
+  background: rgba(5, 5, 5, 0.72);
 
-  backdrop-filter:
-    blur(28px)
-    saturate(0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 
-  -webkit-backdrop-filter:
-    blur(28px)
-    saturate(0.7);
+  touch-action: none;
 }
 
 
-/*
- * Noise nhẹ
- */
+/* =========================================
+   BACKDROP NOISE
+========================================= */
 
 .place-picker-backdrop::after {
   content: '';
 
   position: absolute;
-
   inset: 0;
-
-  opacity: 0.04;
 
   pointer-events: none;
 
-  background-image:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+  opacity: 0.04;
+
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
 }
 
 
 /* =========================================
-   TOP
+   TOP BAR
 ========================================= */
 
 .picker-top {
   position: absolute;
-
   top: 0;
   left: 0;
   right: 0;
@@ -180,56 +170,52 @@
   padding: 0 40px;
 }
 
-
 .picker-title {
   display: flex;
-
   flex-direction: column;
-
   gap: 5px;
 }
 
+.picker-title a {
+  color: #fff;
 
-.picker-title span {
   font-size: 10px;
-
   letter-spacing: 0.25em;
-}
 
+  text-decoration: none;
+}
 
 .picker-title small {
   font-size: 8px;
-
   letter-spacing: 0.2em;
 
   color: rgba(255, 255, 255, 0.35);
 }
 
-
 .picker-close {
   display: flex;
   align-items: center;
-
   gap: 12px;
+
+  padding: 0;
 
   border: 0;
 
   background: transparent;
 
-  color: white;
+  color: #fff;
 
   cursor: pointer;
-}
 
+  -webkit-tap-highlight-color: transparent;
+}
 
 .picker-close span {
   font-size: 8px;
-
   letter-spacing: 0.2em;
 
   opacity: 0.35;
 }
-
 
 .picker-close strong {
   width: 40px;
@@ -239,14 +225,10 @@
   align-items: center;
   justify-content: center;
 
-  border:
-    1px solid
-    rgba(255, 255, 255, 0.25);
-
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 50%;
 
   font-size: 24px;
-
   font-weight: 300;
 
   transition:
@@ -254,31 +236,26 @@
     transform 0.3s ease;
 }
 
-
 .picker-close:hover strong {
-  background:
-    rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
 
   transform: rotate(90deg);
 }
 
 
 /* =========================================
-   PANEL
+   PICKER PANEL
 ========================================= */
 
 .place-picker-panel {
   position: absolute;
-
   inset: 90px 0 0;
 
   display: flex;
+  align-items: center;
+  justify-content: center;
 
   flex-direction: column;
-
-  align-items: center;
-
-  justify-content: center;
 }
 
 
@@ -290,36 +267,31 @@
   position: absolute;
 
   top: 40px;
-
   left: 8vw;
   right: 8vw;
 
   display: flex;
-
   align-items: center;
 
   gap: 20px;
 
   font-size: 8px;
-
   letter-spacing: 0.25em;
 
   color: rgba(255, 255, 255, 0.4);
 }
-
 
 .picker-line {
   flex: 1;
 
   height: 1px;
 
-  background:
-    rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 
 /* =========================================
-   CAROUSEL
+   VERTICAL CAROUSEL
 ========================================= */
 
 .place-picker-carousel {
@@ -329,76 +301,71 @@
   height: 650px;
 
   display: flex;
-
   align-items: center;
   justify-content: center;
 
+  overflow: hidden;
+
   transform-style: preserve-3d;
 
-  overflow: hidden;
+  touch-action: none;
+  overscroll-behavior: none;
 }
 
 
-/*
- * Fade ở trên / dưới
- */
+/* =========================================
+   CAROUSEL FADE
+========================================= */
 
 .place-picker-carousel::before,
 .place-picker-carousel::after {
   content: '';
 
   position: absolute;
-
   left: 0;
   right: 0;
 
-  height: 180px;
-
   z-index: 20;
+
+  height: 180px;
 
   pointer-events: none;
 }
 
-
 .place-picker-carousel::before {
   top: 0;
 
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(5, 5, 5, 0.9),
-      transparent
-    );
+  background: linear-gradient(
+    to bottom,
+    rgba(5, 5, 5, 0.9),
+    transparent
+  );
 }
-
 
 .place-picker-carousel::after {
   bottom: 0;
 
-  background:
-    linear-gradient(
-      to top,
-      rgba(5, 5, 5, 0.9),
-      transparent
-    );
+  background: linear-gradient(
+    to top,
+    rgba(5, 5, 5, 0.9),
+    transparent
+  );
 }
 
 
 /* =========================================
-   ITEM
+   CAROUSEL ITEM
 ========================================= */
 
 .place-picker-item {
   position: absolute;
 
-  left: 50%;
-
   top: 50%;
+  left: 50%;
 
   width: 420px;
 
   display: flex;
-
   align-items: center;
 
   gap: 28px;
@@ -409,19 +376,28 @@
 
   background: transparent;
 
-  color: white;
+  color: #fff;
 
   cursor: pointer;
 
-  transform-style: preserve-3d;
-
   transform:
     translate(-50%, -50%);
+
+  transform-style: preserve-3d;
+
+  touch-action: none;
+
+  -webkit-tap-highlight-color: transparent;
 
   will-change:
     transform,
     opacity,
     filter;
+}
+
+.place-picker-item:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 6px;
 }
 
 
@@ -437,47 +413,44 @@
 
   overflow: hidden;
 
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 50%;
 
-  border:
-    1px solid
-    rgba(255, 255, 255, 0.25);
+  transform-style: preserve-3d;
 
   transition:
     width 0.6s ease,
     height 0.6s ease,
     border-color 0.6s ease;
-
-  transform-style: preserve-3d;
 }
-
 
 .place-picker-item.active .place-picker-image {
   width: 180px;
   height: 180px;
 
-  border-color:
-    rgba(255, 255, 255, 0.7);
+  border-color: rgba(255, 255, 255, 0.7);
 }
 
-
 .place-picker-image img {
+  display: block;
+
   width: 100%;
   height: 100%;
 
   object-fit: cover;
 
-  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
 }
 
 
 /* =========================================
-   NAME
+   PLACE NAME
 ========================================= */
 
 .place-picker-name {
   display: flex;
-
   flex-direction: column;
 
   gap: 8px;
@@ -485,23 +458,17 @@
   text-align: left;
 }
 
-
 .place-number {
   font-size: 8px;
-
   letter-spacing: 0.2em;
 
   color: rgba(255, 255, 255, 0.35);
 }
 
-
 .place-name {
-  font-family:
-    'Cormorant Garamond',
-    serif;
+  font-family: 'Cormorant Garamond', serif;
 
   font-size: 28px;
-
   font-weight: 400;
 
   line-height: 1;
@@ -513,41 +480,37 @@
     color 0.6s ease;
 }
 
-
 .place-picker-item.active .place-name {
   font-size: 46px;
 
-  color: white;
+  color: #fff;
 }
 
 
 /* =========================================
-   HINT
+   NAVIGATION HINT
 ========================================= */
 
 .picker-hint {
   position: absolute;
 
-  bottom: 30px;
-
   left: 50%;
+  bottom: 30px;
 
   transform: translateX(-50%);
 
   display: flex;
-
   align-items: center;
 
   gap: 12px;
 
   font-size: 8px;
-
   letter-spacing: 0.25em;
 
-  color:
-    rgba(255, 255, 255, 0.3);
-}
+  color: rgba(255, 255, 255, 0.3);
 
+  white-space: nowrap;
+}
 
 .picker-hint span:first-child,
 .picker-hint span:last-child {
@@ -558,32 +521,77 @@
 
 
 /* =========================================
+   NAVIGATION BUTTON
+========================================= */
+
+.picker-nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  padding: 0;
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+
+  background: transparent;
+
+  color: #fff;
+
+  cursor: pointer;
+
+  -webkit-tap-highlight-color: transparent;
+
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.picker-nav-button:hover {
+  background: rgba(255, 255, 255, 0.08);
+
+  border-color: rgba(255, 255, 255, 0.4);
+
+  transform: scale(1.08);
+}
+
+
+/* =========================================
    MOBILE
 ========================================= */
 
-@media (max-width: 700px) {
-
+@media (max-width: 768px) {
   .places-trigger {
+    top: auto;
     left: 16px;
     bottom: 16px;
   }
 
-
   .picker-top {
+    height: 80px;
+
     padding: 0 20px;
   }
 
-
   .picker-heading {
+    top: 30px;
+
     left: 20px;
     right: 20px;
   }
 
-
-  .place-picker-carousel {
-    height: 600px;
+  .place-picker-panel {
+    inset: 80px 0 0;
   }
 
+  .place-picker-carousel {
+    width: 100%;
+    height: 100%;
+  }
 
   .place-picker-item {
     width: 90vw;
@@ -591,23 +599,19 @@
     gap: 18px;
   }
 
-
   .place-picker-image {
     width: 72px;
     height: 72px;
   }
-
 
   .place-picker-item.active .place-picker-image {
     width: 140px;
     height: 140px;
   }
 
-
   .place-name {
     font-size: 20px;
   }
-
 
   .place-picker-item.active .place-name {
     font-size: 34px;
@@ -615,9 +619,22 @@
     white-space: normal;
   }
 
-
   .picker-hint {
     bottom: 20px;
   }
+}
 
+
+/* =========================================
+   REDUCE MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .places-trigger,
+  .picker-close strong,
+  .place-picker-image,
+  .place-name,
+  .picker-nav-button {
+    transition: none !important;
+  }
 }
