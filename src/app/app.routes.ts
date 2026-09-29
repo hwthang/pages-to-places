@@ -1,7 +1,25 @@
 import { Routes } from '@angular/router';
+import { PlaceLayoutComponent } from './layouts/place-layout/place-layout.component';
 
 export const routes: Routes = [
-  { path: '', loadComponent: () => import('./pages/home/home').then((m) => m.Home) },
-  { path: 'eiffel-tower', loadComponent: () => import('./pages/eiffel-tower/eiffel-tower').then((m) => m.EiffelTower) },
-   { path: 'chapter-01', loadComponent: () => import('./pages/chapter-01/chapter-01').then((m) => m.Chapter01) },
+  {
+    path: '',
+    loadComponent: () => import('./pages/intro/intro').then((m) => m.Intro),
+  },
+  {
+    path: 'home',
+    loadComponent: () => import('./pages/home/home').then((m) => m.Home),
+  },
+
+  {
+    path: 'place',
+    component: PlaceLayoutComponent,
+
+    children: [
+      {
+        path: ':slug',
+        loadComponent: () => import('./pages/place/place').then((m) => m.Place),
+      },
+    ],
+  },
 ];

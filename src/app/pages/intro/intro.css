@@ -1,0 +1,288 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+
+/* =========================================
+   ROOT
+========================================= */
+
+.intro {
+  position: relative;
+
+  width: 100%;
+  min-height: 100vh;
+
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f8f2e8;
+
+  color: #6f5c51;
+}
+
+
+/* =========================================
+   BACKGROUND
+========================================= */
+
+.intro-background {
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+}
+
+
+.intro-grain {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0.035;
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+}
+
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.intro-content {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* =========================================
+   LOGO STAGE
+========================================= */
+
+.logo-stage {
+  position: relative;
+
+  width: 360px;
+  height: 360px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* =========================================
+   LOGO CIRCLE
+========================================= */
+
+.logo-circle {
+  position: relative;
+  z-index: 5;
+
+  width: 210px;
+  height: 210px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #f8f2e8;
+
+  border: 1px solid rgba(111, 92, 81, 0.18);
+
+  box-shadow:
+    0 0 0 10px rgba(111, 92, 81, 0.025),
+    0 20px 60px rgba(111, 92, 81, 0.08);
+
+  will-change: transform;
+}
+
+
+/* =========================================
+   LOGO
+========================================= */
+
+.intro-logo {
+  width: 170px;
+  height: 170px;
+
+  object-fit: contain;
+
+  display: block;
+
+  will-change: transform;
+}
+
+
+/* =========================================
+   OUTER RING
+========================================= */
+
+.logo-ring {
+  position: absolute;
+  z-index: 3;
+
+  width: 230px;
+  height: 230px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(160, 131, 118, 0.35);
+
+  pointer-events: none;
+}
+
+
+/* =========================================
+   RIPPLE
+========================================= */
+
+.ripple {
+  position: absolute;
+
+  width: 210px;
+  height: 210px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(160, 131, 118, 0.28);
+
+  transform: scale(1);
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  will-change:
+    transform,
+    opacity;
+}
+
+
+/* =========================================
+   BRAND
+========================================= */
+
+.brand {
+  margin-top: 25px;
+
+  font-size: 9px;
+
+  font-weight: 500;
+
+  letter-spacing: 0.42em;
+
+  color: #8b7165;
+}
+
+
+/* =========================================
+   FOOTER / LOADING
+========================================= */
+
+.intro-footer {
+  position: absolute;
+
+  z-index: 10;
+
+  left: 50%;
+  bottom: 35px;
+
+  transform: translateX(-50%);
+
+  width: min(420px, calc(100vw - 50px));
+}
+
+
+.loading-meta {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 9px;
+
+  font-size: 8px;
+
+  letter-spacing: 0.28em;
+
+  color: #a08376;
+}
+
+
+.intro-progress {
+  width: 100%;
+  height: 1px;
+
+  overflow: hidden;
+
+  background:
+    rgba(111, 92, 81, 0.15);
+}
+
+
+.intro-progress-bar {
+  width: 100%;
+  height: 100%;
+
+  transform:
+    scaleX(0);
+
+  transform-origin:
+    left center;
+
+  background: #8b7165;
+
+  will-change: transform;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 600px) {
+
+  .logo-stage {
+    width: 300px;
+    height: 300px;
+  }
+
+  .logo-circle {
+    width: 175px;
+    height: 175px;
+  }
+
+  .intro-logo {
+    width: 140px;
+    height: 140px;
+  }
+
+  .logo-ring {
+    width: 195px;
+    height: 195px;
+  }
+
+  .ripple {
+    width: 175px;
+    height: 175px;
+  }
+
+  .brand {
+    font-size: 8px;
+  }
+}

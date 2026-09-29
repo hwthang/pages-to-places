@@ -1,0 +1,623 @@
+:host {
+  display: block;
+}
+
+
+/* =========================================
+   LAYOUT
+========================================= */
+
+.place-layout {
+  position: relative;
+
+  min-height: 100vh;
+
+  background: #080808;
+  color: white;
+}
+
+
+.place-content {
+  min-height: 100vh;
+}
+
+
+/* =========================================
+   TRIGGER
+========================================= */
+
+.places-trigger {
+  position: fixed;
+
+  left: 32px;
+  top: 32px;
+
+  z-index: 200;
+
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 0 18px;
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+
+  border-radius: 999px;
+
+  background: rgba(10, 10, 10, 0.45);
+
+  backdrop-filter: blur(14px);
+
+  color: white;
+
+  cursor: pointer;
+
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+
+.places-trigger:hover {
+  background: rgba(255, 255, 255, 0.1);
+
+  border-color: rgba(255, 255, 255, 0.5);
+
+  transform: translateY(-2px);
+}
+
+
+.trigger-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: white;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(255, 255, 255, 0.08);
+}
+
+
+.trigger-text {
+  font-size: 9px;
+
+  letter-spacing: 0.25em;
+}
+
+
+.trigger-count {
+  padding-left: 10px;
+
+  border-left:
+    1px solid
+    rgba(255, 255, 255, 0.2);
+
+  font-size: 9px;
+
+  opacity: 0.5;
+}
+
+
+/* =========================================
+   OVERLAY
+========================================= */
+
+.place-picker {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1000;
+
+  perspective: 1200px;
+}
+
+
+.place-picker-backdrop {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    rgba(5, 5, 5, 0.72);
+
+  backdrop-filter:
+    blur(28px)
+    saturate(0.7);
+
+  -webkit-backdrop-filter:
+    blur(28px)
+    saturate(0.7);
+}
+
+
+/*
+ * Noise nhẹ
+ */
+
+.place-picker-backdrop::after {
+  content: '';
+
+  position: absolute;
+
+  inset: 0;
+
+  opacity: 0.04;
+
+  pointer-events: none;
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+}
+
+
+/* =========================================
+   TOP
+========================================= */
+
+.picker-top {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  z-index: 10;
+
+  height: 90px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 40px;
+}
+
+
+.picker-title {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+
+.picker-title span {
+  font-size: 10px;
+
+  letter-spacing: 0.25em;
+}
+
+
+.picker-title small {
+  font-size: 8px;
+
+  letter-spacing: 0.2em;
+
+  color: rgba(255, 255, 255, 0.35);
+}
+
+
+.picker-close {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: white;
+
+  cursor: pointer;
+}
+
+
+.picker-close span {
+  font-size: 8px;
+
+  letter-spacing: 0.2em;
+
+  opacity: 0.35;
+}
+
+
+.picker-close strong {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.25);
+
+  border-radius: 50%;
+
+  font-size: 24px;
+
+  font-weight: 300;
+
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease;
+}
+
+
+.picker-close:hover strong {
+  background:
+    rgba(255, 255, 255, 0.1);
+
+  transform: rotate(90deg);
+}
+
+
+/* =========================================
+   PANEL
+========================================= */
+
+.place-picker-panel {
+  position: absolute;
+
+  inset: 90px 0 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+
+/* =========================================
+   HEADING
+========================================= */
+
+.picker-heading {
+  position: absolute;
+
+  top: 40px;
+
+  left: 8vw;
+  right: 8vw;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+
+  font-size: 8px;
+
+  letter-spacing: 0.25em;
+
+  color: rgba(255, 255, 255, 0.4);
+}
+
+
+.picker-line {
+  flex: 1;
+
+  height: 1px;
+
+  background:
+    rgba(255, 255, 255, 0.12);
+}
+
+
+/* =========================================
+   CAROUSEL
+========================================= */
+
+.place-picker-carousel {
+  position: relative;
+
+  width: 100%;
+  height: 650px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  transform-style: preserve-3d;
+
+  overflow: hidden;
+}
+
+
+/*
+ * Fade ở trên / dưới
+ */
+
+.place-picker-carousel::before,
+.place-picker-carousel::after {
+  content: '';
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  height: 180px;
+
+  z-index: 20;
+
+  pointer-events: none;
+}
+
+
+.place-picker-carousel::before {
+  top: 0;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(5, 5, 5, 0.9),
+      transparent
+    );
+}
+
+
+.place-picker-carousel::after {
+  bottom: 0;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(5, 5, 5, 0.9),
+      transparent
+    );
+}
+
+
+/* =========================================
+   ITEM
+========================================= */
+
+.place-picker-item {
+  position: absolute;
+
+  left: 50%;
+
+  top: 50%;
+
+  width: 420px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 28px;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color: white;
+
+  cursor: pointer;
+
+  transform-style: preserve-3d;
+
+  transform:
+    translate(-50%, -50%);
+
+  will-change:
+    transform,
+    opacity,
+    filter;
+}
+
+
+/* =========================================
+   IMAGE
+========================================= */
+
+.place-picker-image {
+  flex: 0 0 auto;
+
+  width: 100px;
+  height: 100px;
+
+  overflow: hidden;
+
+  border-radius: 50%;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.25);
+
+  transition:
+    width 0.6s ease,
+    height 0.6s ease,
+    border-color 0.6s ease;
+
+  transform-style: preserve-3d;
+}
+
+
+.place-picker-item.active .place-picker-image {
+  width: 180px;
+  height: 180px;
+
+  border-color:
+    rgba(255, 255, 255, 0.7);
+}
+
+
+.place-picker-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+}
+
+
+/* =========================================
+   NAME
+========================================= */
+
+.place-picker-name {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+
+  text-align: left;
+}
+
+
+.place-number {
+  font-size: 8px;
+
+  letter-spacing: 0.2em;
+
+  color: rgba(255, 255, 255, 0.35);
+}
+
+
+.place-name {
+  font-family:
+    'Cormorant Garamond',
+    serif;
+
+  font-size: 28px;
+
+  font-weight: 400;
+
+  line-height: 1;
+
+  white-space: nowrap;
+
+  transition:
+    font-size 0.6s ease,
+    color 0.6s ease;
+}
+
+
+.place-picker-item.active .place-name {
+  font-size: 46px;
+
+  color: white;
+}
+
+
+/* =========================================
+   HINT
+========================================= */
+
+.picker-hint {
+  position: absolute;
+
+  bottom: 30px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  font-size: 8px;
+
+  letter-spacing: 0.25em;
+
+  color:
+    rgba(255, 255, 255, 0.3);
+}
+
+
+.picker-hint span:first-child,
+.picker-hint span:last-child {
+  font-size: 14px;
+
+  opacity: 0.5;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 700px) {
+
+  .places-trigger {
+    left: 16px;
+    bottom: 16px;
+  }
+
+
+  .picker-top {
+    padding: 0 20px;
+  }
+
+
+  .picker-heading {
+    left: 20px;
+    right: 20px;
+  }
+
+
+  .place-picker-carousel {
+    height: 600px;
+  }
+
+
+  .place-picker-item {
+    width: 90vw;
+
+    gap: 18px;
+  }
+
+
+  .place-picker-image {
+    width: 72px;
+    height: 72px;
+  }
+
+
+  .place-picker-item.active .place-picker-image {
+    width: 140px;
+    height: 140px;
+  }
+
+
+  .place-name {
+    font-size: 20px;
+  }
+
+
+  .place-picker-item.active .place-name {
+    font-size: 34px;
+
+    white-space: normal;
+  }
+
+
+  .picker-hint {
+    bottom: 20px;
+  }
+
+}

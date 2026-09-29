@@ -1,0 +1,169 @@
+<div class="place-layout">
+
+  <!-- =========================================
+       TRANG ĐỊA ĐIỂM
+  ========================================== -->
+
+  <div class="place-content">
+
+    <router-outlet />
+
+  </div>
+
+
+  <!-- =========================================
+       NÚT MỞ DANH SÁCH
+  ========================================== -->
+
+  <button
+    type="button"
+    class="places-trigger"
+    (click)="openPlaces()"
+  >
+
+    <span class="trigger-dot"></span>
+
+    <span class="trigger-text">
+      ĐỊA ĐIỂM
+    </span>
+
+    <span class="trigger-count">
+      {{ places.length }}
+    </span>
+
+  </button>
+
+
+  <!-- =========================================
+       BỘ CHỌN ĐỊA ĐIỂM
+  ========================================== -->
+
+  @if (isOpen) {
+
+    <div class="place-picker">
+
+      <!-- Nền mờ -->
+
+      <div class="place-picker-backdrop"></div>
+
+
+      <!-- Thanh trên -->
+
+      <div class="picker-top">
+
+        <div class="picker-title">
+
+          <a href="/">
+            PAGES TO PLACES
+          </a>
+
+          <small>
+            KHÁM PHÁ PARIS
+          </small>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="picker-close"
+          (click)="closePlaces()"
+        >
+
+          <span>ĐÓNG</span>
+
+          <strong>×</strong>
+
+        </button>
+
+      </div>
+
+
+      <!-- Nội dung chính -->
+
+      <div class="place-picker-panel">
+
+        <div class="picker-heading">
+
+          <span>
+            CHỌN ĐỊA ĐIỂM
+          </span>
+
+          <div class="picker-line"></div>
+
+          <span>
+            {{ (activeIndex + 1).toString().padStart(2, '0') }}
+            /
+            {{ places.length.toString().padStart(2, '0') }}
+          </span>
+
+        </div>
+
+
+        <!-- Danh sách địa điểm -->
+
+        <div class="place-picker-carousel">
+
+          @for (
+            place of places;
+            track place.slug;
+            let i = $index
+          ) {
+
+            <button
+              type="button"
+              class="place-picker-item"
+              [class.active]="i === activeIndex"
+              (click)="selectPlace(i)"
+            >
+
+              <div class="place-picker-image">
+
+                <img
+                  [src]="place.images[0]"
+                  [alt]="place.name"
+                />
+
+              </div>
+
+
+              <div class="place-picker-name">
+
+                <span class="place-number">
+                  {{ (i + 1).toString().padStart(2, '0') }}
+                </span>
+
+                <span class="place-name">
+                  {{ place.name }}
+                </span>
+
+              </div>
+
+            </button>
+
+          }
+
+        </div>
+
+
+        <!-- Hướng dẫn -->
+
+        <div class="picker-hint">
+
+          <span>↑</span>
+
+          <span>
+            CUỘN ĐỂ KHÁM PHÁ
+          </span>
+
+          <span>↓</span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>
