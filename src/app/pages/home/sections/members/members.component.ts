@@ -11,6 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export interface ITeamMember {
   name: string;
+  id:string; //mssv 47.xx.xx.xx
   role: string;
   image: string;
   description?: string;
@@ -24,49 +25,56 @@ export interface ITeamMember {
 })
 export class MembersComponent implements AfterViewInit, OnDestroy {
 
-  teamMembers: ITeamMember[] = [
-    {
-      name: 'Thành Luân',
-      role: 'Phát triển',
-      image: '/assets/images/team/member-default.png',
-    },
-    {
-      name: 'Thanh Hằng',
-      role: 'Thiết kế',
-      image: '/assets/images/team/embexiu.png',
-    },
-    {
-      name: 'Quỳnh Trâm',
-      role: 'Phát triển',
-      image: '/assets/images/team/member-default.png',
-    },
-    {
-      name: 'Như Thuần',
-      role: 'Nội dung',
-      image: '/assets/images/team/member-default.png',
-    },
-    {
-      name: 'Bảo Hân',
-      role: 'Thiết kế',
-      image: '/assets/images/team/member-default.png',
-    },
-    {
-      name: 'Thanh Thu',
-      role: 'Phát triển',
-      image: '/assets/images/team/member-default.png',
-    },
-    {
-      name: 'Vân',
-      role: 'Nội dung',
-      image: '/assets/images/team/member-default.png',
-    },
-    {
-      name: 'Ngọc',
-      role: 'Phát triển',
-      image: '/assets/images/team/member-default.png',
-    },
-  ];
-
+teamMembers: ITeamMember[] = [
+  {
+    name: 'Thành Luân',
+    id: '49.01.606.041',
+    role: 'Phát triển web',
+    image: '/assets/images/team/thành luân.JPG',
+  },
+  {
+    name: 'Thanh Hằng',
+    id: '49.01.606.027',
+    role: 'Thiết kế & Phát triển web',
+    image: '/assets/images/team/thanh-hang.jpg',
+  },
+  {
+    name: 'Quỳnh Trâm',
+    id: '49.01.606.085',
+    role: 'Nội dung',
+    image: '/assets/images/team/quynh-tram.jpg',
+  },
+  {
+    name: 'Như Thuần',
+    id: '49.01.606.075',
+    role: 'Nội dung',
+    image: '/assets/images/team/nhu-thuan.jpg',
+  },
+  {
+    name: 'Bảo Hân',
+    id: '49.01.606.031',
+    role: 'Nội dung',
+    image: '/assets/images/team/bao-han.jpg',
+  },
+  {
+    name: 'Thanh Thu',
+    id: '49.01.606.074',
+    role: 'Nội dung',
+    image: '/assets/images/team/Thanh Thu.jpg',
+  },
+  {
+    name: 'Kiều Vân',
+    id: '49.01.606.097',
+    role: 'Nội dung',
+    image: '/assets/images/team/kieu-van.png',
+  },
+  {
+    name: 'Minh Ngọc',
+    id: '49.01.606.053',
+    role: 'Nội dung',
+    image: '/assets/images/team/minh-ngoc.jpg',
+  },
+];
 
   ngAfterViewInit(): void {
     this.initAnimation();

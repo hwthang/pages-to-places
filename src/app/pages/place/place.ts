@@ -15,6 +15,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import { PLACES } from '../../data/places';
 import { IPlace } from '../../core/models/place';
+import { NEW_PLACES } from '../../data/new-places';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -106,7 +107,7 @@ export class Place implements AfterViewInit, OnDestroy {
     /*
      * Tìm place.
      */
-    const foundPlace = PLACES.find(
+    const foundPlace = NEW_PLACES.find(
       (item) => item.slug === slug,
     );
 

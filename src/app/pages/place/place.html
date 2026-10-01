@@ -64,7 +64,7 @@
             {{ ($index + 1).toString().padStart(2, '0') }}
           </span>
 
-          <h2>
+          <h2 class="text-5xl">
             {{ content.title }}
           </h2>
 
@@ -81,50 +81,6 @@
       </section>
 
     }
-
-
-    <!-- =========================================
-         REFERENCES
-    ========================================== -->
-
-    @if (currentPlace.references.length > 0) {
-
-      <section class="reference">
-
-        <div class="reference-header">
-          <span>DẪN CHỨNG</span>
-        </div>
-
-
-        <div class="reference-list">
-
-          @for (
-            reference of currentPlace.references;
-            track $index
-          ) {
-
-            <div class="reference-item">
-
-              <blockquote>
-                “{{ reference.quote }}”
-              </blockquote>
-
-              <p>
-                Dương Thụy, 2019, tr.
-                {{ reference.page }}
-              </p>
-
-            </div>
-
-          }
-
-        </div>
-
-      </section>
-
-    }
-
-
     <!-- =========================================
          FINAL GALLERY
     ========================================== -->

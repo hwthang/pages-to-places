@@ -6,6 +6,7 @@ import { gsap } from 'gsap';
 
 import { PLACES } from '../../data/places';
 import { IPlace } from '../../core/models/place';
+import { NEW_PLACES } from '../../data/new-places';
 
 @Component({
   selector: 'app-place-layout',
@@ -19,7 +20,7 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
-  readonly places: IPlace[] = PLACES;
+  readonly places: IPlace[] = NEW_PLACES;
 
   currentSlug = '';
 

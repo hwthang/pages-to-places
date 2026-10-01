@@ -10,35 +10,39 @@ export const PLACES = [
       '/assets/images/locations/eiffel-tower/image-4.jpg',
     ],
 
-    contents: [
-      {
-        title: 'Biểu tượng của Paris',
-        description: 'Tháp Eiffel là một trong những hình ảnh gắn liền với Paris và vẻ đẹp hoa lệ của thành phố.',
-        content:
-          'Được xây dựng từ năm 1887 đến 1889 nhân dịp Triển lãm Thế giới, Tháp Eiffel trở thành một công trình kiến trúc đặc biệt giữa lòng Paris. Trong câu chuyện, sự xuất hiện của Tháp Eiffel trước hết gợi ra hình ảnh về một Paris hoa lệ, một thành phố mà người ta thường hình dung qua những biểu tượng nổi tiếng và những khung cảnh mang tính biểu tượng.',
-      },
+contents: [
+  {
+    title: 'Biểu tượng của Paris',
+    description:
+      'Tháp Eiffel - Công trình kiến trúc nổi tiếng gắn liền với hình ảnh thành phố Paris.',
+    content:
+      'Tháp Eiffel là một trong những biểu tượng nổi tiếng nhất của Paris. Tọa lạc bên sông Seine, công trình bằng sắt này đã trở thành hình ảnh quen thuộc khi nhắc đến thủ đô nước Pháp.',
+  },
 
-      {
-        title: 'Một Paris nhìn từ xa',
-        description: 'Mai chưa từng đến Tháp Eiffel mà chỉ có thể nhìn thấy nó từ xa, xuyên qua những công trình khác.',
-        content:
-          'Khoảng cách giữa Mai và Tháp Eiffel không chỉ là khoảng cách về không gian. Cô đang ở Paris nhưng vẫn chưa thực sự bước đến một trong những biểu tượng nổi tiếng nhất của thành phố. Hình ảnh nhìn Tháp Eiffel từ xa tạo nên cảm giác về một địa điểm rất gần trước mắt nhưng vẫn chưa thể chạm tới.',
-      },
+  {
+    title: 'Một công trình độc đáo',
+    description:
+      'Tháp Eiffel nổi bật với kết cấu sắt và kiến trúc đặc trưng.',
+    content:
+      'Được xây dựng từ năm 1887 đến 1889 nhân dịp Triển lãm Thế giới, công trình gây ấn tượng bởi kết cấu sắt cao vút và hình dáng đặc biệt.',
+  },
 
-      {
-        title: 'Những điều chưa kịp chạm tới',
-        description: 'Tháp Eiffel trở thành hình ảnh gợi nhắc về những trải nghiệm mà Mai chưa có cơ hội thực sự sống cùng.',
-        content:
-          'Việc chỉ nhìn Tháp Eiffel từ xa khiến địa danh này gắn với cảm giác dang dở trong hành trình của Mai. Paris đã ở ngay trước mắt nhưng cô vẫn chưa có cơ hội tận hưởng trọn vẹn thành phố ấy. Vì vậy, Tháp Eiffel không chỉ được nhìn nhận như một địa điểm du lịch mà còn gợi lên những điều còn chưa được trải nghiệm, những mong muốn chưa thành hiện thực và những khoảnh khắc vẫn còn ở phía trước.',
-      },
+  {
+    title: 'Trong đời sống Paris',
+    description:
+      'Không chỉ là công trình kiến trúc, Tháp Eiffel còn là điểm đến nổi tiếng của thành phố.',
+    content:
+      'Từ quảng trường Trocadéro, bờ sông Seine đến khu vực xung quanh tháp, Tháp Eiffel tạo nên một không gian đặc trưng của Paris. Đây cũng là điểm tham quan thu hút đông đảo du khách khi đến thành phố.',
+  },
 
-      {
-        title: 'Ước mơ giữa lòng Paris',
-        description: 'Tháp Eiffel trở thành biểu tượng cho những ước mơ, khát khao và cả sự tiếc nuối của Mai.',
-        content:
-          'Từ một công trình nổi tiếng của Paris, Tháp Eiffel trong tác phẩm mang thêm một ý nghĩa gắn với thế giới nội tâm của nhân vật. Nó đại diện cho những ước mơ và khát khao được khám phá, được tận hưởng và được thật sự sống trong thành phố mà mình đang ở. Nhưng đồng thời, việc chưa từng đến gần biểu tượng ấy cũng để lại một khoảng trống, một sự tiếc nuối về những điều Mai chưa thể trải nghiệm trọn vẹn.',
-      },
-    ],
+  {
+    title: 'Trong Nhắm mắt thấy Paris',
+    description:
+      'Một địa danh Mai khám phá trong hành trình trải nghiệm Paris.',
+    content:
+      'Trong Nhắm mắt thấy Paris, Tháp Eiffel xuất hiện khi Louis đưa Mai đi thăm thú Paris. Cùng với vườn Tuilerie, khu Latin và đồi Montmartre, địa danh này góp phần mở ra một Paris mà Mai bắt đầu trực tiếp khám phá và trải nghiệm.',
+  },
+],
 
     references: [
       {
