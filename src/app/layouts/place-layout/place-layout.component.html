@@ -5,6 +5,28 @@
     <router-outlet />
   </div>
 
+  <!-- ĐI ĐẾN ĐỊA ĐIỂM TIẾP THEO -->
+  <section class="place-next-section">
+    <button
+      type="button"
+      class="place-next-button"
+      (click)="goToNextPlace()"
+      [attr.aria-label]="'Đi đến ' + nextPlace.name"
+    >
+      <span class="place-next-label">
+        ĐỊA ĐIỂM TIẾP THEO
+      </span>
+
+      <span class="place-next-name">
+        {{ nextPlace.name }}
+      </span>
+
+      <span class="place-next-icon">
+        <i class="fa-solid fa-arrow-right"></i>
+      </span>
+    </button>
+  </section>
+
   <!-- NÚT MỞ DANH SÁCH -->
   <button
     type="button"

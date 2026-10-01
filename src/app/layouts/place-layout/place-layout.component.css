@@ -638,3 +638,154 @@
     transition: none !important;
   }
 }
+
+/* =========================================
+   NEXT PLACE
+========================================= */
+
+.place-next-section {
+  position: relative;
+
+  min-height: 45vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 80px 24px;
+
+  background: #080808;
+  color: white;
+}
+
+.place-next-button {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: auto auto auto;
+  align-items: center;
+
+  gap: 32px;
+
+  padding: 28px 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color: white;
+
+  cursor: pointer;
+
+  text-align: left;
+
+  transition: transform 0.5s ease;
+}
+
+.place-next-button::before {
+  content: '';
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 1px;
+
+  background: rgba(255, 255, 255, 0.25);
+
+  transform: scaleX(0);
+  transform-origin: left;
+
+  transition: transform 0.6s ease;
+}
+
+.place-next-button:hover {
+  transform: translateX(8px);
+}
+
+.place-next-button:hover::before {
+  transform: scaleX(1);
+}
+
+.place-next-label {
+  font-size: 8px;
+
+  letter-spacing: 0.3em;
+
+  color: rgba(255, 255, 255, 0.35);
+
+  white-space: nowrap;
+}
+
+.place-next-name {
+  font-family: 'Cormorant Garamond', serif;
+
+  font-size: clamp(32px, 5vw, 72px);
+
+  font-weight: 400;
+
+  line-height: 0.9;
+
+  white-space: nowrap;
+}
+
+.place-next-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+
+  border-radius: 50%;
+
+  transition:
+    background 0.4s ease,
+    transform 0.5s ease;
+}
+
+.place-next-button:hover .place-next-icon {
+  background: rgba(255, 255, 255, 0.1);
+
+  transform: translateX(8px);
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 700px) {
+  .place-next-section {
+    min-height: 40vh;
+
+    padding: 60px 20px;
+  }
+
+  .place-next-button {
+    grid-template-columns: 1fr auto;
+
+    width: 100%;
+
+    gap: 16px;
+  }
+
+  .place-next-label {
+    grid-column: 1 / -1;
+  }
+
+  .place-next-name {
+    white-space: normal;
+
+    font-size: 42px;
+  }
+
+  .place-next-icon {
+    width: 42px;
+    height: 42px;
+  }
+}

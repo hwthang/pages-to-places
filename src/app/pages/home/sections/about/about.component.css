@@ -1,29 +1,55 @@
+:host {
+  display: block;
+}
+
 /* =========================================================
    SECTION
    ========================================================= */
 
 .about-section {
-  background: #ffffff;
+  position: relative;
 }
-
-
-/* =========================================================
-   CONTENT
-   ========================================================= */
-
-.about-content {
-  min-height: 70vh;
-}
-
 
 /* =========================================================
    TITLE
    ========================================================= */
 
 .about-title {
-  letter-spacing: -0.04em;
+  overflow: hidden;
 }
 
+/*
+ * Mỗi word là một block inline.
+ * GSAP sẽ animate từng word,
+ * không animate từng ký tự.
+ */
+
+.title-word {
+  display: inline-block;
+
+  margin-right: 0.2em;
+
+  opacity: 0;
+  transform: translateY(110%);
+
+  will-change: transform, opacity;
+}
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.about-bottom {
+  opacity: 1;
+}
+
+.about-info {
+  will-change: transform, opacity;
+}
+
+.about-description {
+  max-width: 700px;
+}
 
 /* =========================================================
    DIVIDER
@@ -33,47 +59,72 @@
   transform-origin: left center;
 }
 
-
 /* =========================================================
-   DESCRIPTION
+   LOGO
    ========================================================= */
 
-.about-description {
-  max-width: 600px;
+.about-logo {
+  will-change: transform, opacity;
 }
 
+.about-logo-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 400px;
+}
+
+.about-logo-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
 
 /* =========================================================
    CTA
    ========================================================= */
 
 .about-link {
-  transition:
-    opacity 0.3s ease;
+  cursor: pointer;
 }
-
-.about-link:hover {
-  opacity: 0.8;
-}
-
 
 /* =========================================================
    MOBILE
    ========================================================= */
 
 @media (max-width: 768px) {
-
-  .about-content {
-    min-height: auto;
+  .about-section {
+    padding-top: 100px;
+    padding-bottom: 100px;
   }
 
   .about-title {
-    font-size: clamp(3.5rem, 15vw, 5rem);
+    font-size: clamp(3rem, 13vw, 5rem);
+    line-height: 1.05;
   }
 
-  .about-description {
-    font-size: 1rem;
-    line-height: 1.8;
+  .about-bottom {
+    margin-top: 5rem;
   }
 
+  .about-logo-inner {
+    height: 400px;
+  }
+}
+
+/* =========================================================
+   REDUCE MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .title-word,
+  .about-info,
+  .about-logo,
+  .about-divider {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

@@ -1,7 +1,13 @@
-import { AfterViewInit, Component, inject, OnDestroy } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  inject,
+} from '@angular/core';
 
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
 import { AnimationService } from '../../../../core/services/animation.service';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -13,94 +19,201 @@ gsap.registerPlugin(ScrollTrigger);
   styleUrl: './about.component.css',
 })
 export class AboutComponent implements AfterViewInit, OnDestroy {
-  /**
-   * Khởi tạo animation khi section xuất hiện
-   * trong viewport.
-   */
+  private readonly animationService = inject(AnimationService);
+
+  private timeline?: gsap.core.Timeline;
+
   ngAfterViewInit(): void {
     this.initAnimation();
   }
 
-  private readonly animationService = inject(AnimationService);
-
-  scrollToCta(): void {
-    this.animationService.scrollToId('cta');
-  }
   /**
-   * Animation cho toàn bộ About section.
+   * Scroll đến CTA section.
+   */
+  scrollToBook(): void {
+    this.animationService.scrollToId('book');
+  }
+
+  /**
+   * Animation chính của About section.
+   *
+   * Flow:
+   *
+   * 01. Eyebrow xuất hiện
+   * 02. Title xuất hiện từng từ
+   * 03. Content xuất hiện sau khi title hoàn thành
+   * 04. Logo xuất hiện sau content
    */
   private initAnimation(): void {
-    const timeline = gsap.timeline({
+    const section = document.querySelector('#about');
+
+    if (!section) {
+      return;
+    }
+
+    const words = section.querySelectorAll('.title-word');
+    const eyebrow = section.querySelector('.about-eyebrow');
+    const info = section.querySelector('.about-info');
+    const divider = section.querySelector('.about-divider');
+    const descriptions = section.querySelectorAll('.about-description');
+    const link = section.querySelector('.about-link');
+    const logo = section.querySelector('.about-logo');
+
+    this.timeline = gsap.timeline({
       scrollTrigger: {
-        trigger: '#about',
-
-        /*
-         * Bắt đầu animation khi section
-         * đi vào khoảng 75% viewport.
-         */
-        start: 'top 75%',
-
+        trigger: section,
+        start: 'top 70%',
         once: true,
       },
     });
 
-    /*
-     * Eyebrow xuất hiện từ dưới lên.
-     */
-    timeline.from('.about-eyebrow', {
-      y: 30,
-      opacity: 0,
-      duration: 0.6,
-      ease: 'power3.out',
-    });
+    /* =====================================================
+       01. EYEBROW
+       ===================================================== */
 
-    /*
-     * Title xuất hiện lớn từ dưới lên.
-     */
-    timeline.from(
-      '.about-title',
+    this.timeline.fromTo(
+      eyebrow,
       {
-        y: 80,
+        y: 20,
         opacity: 0,
-        duration: 1,
+      },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.6,
         ease: 'power3.out',
       },
-      '-=0.3',
     );
 
-    /*
-     * Phần nội dung bên phải xuất hiện
-     * sau title.
-     */
-    timeline.from(
-      '.about-info',
+    /* =====================================================
+       02. TITLE - TỪNG TỪ
+       ===================================================== */
+
+    this.timeline.to(
+      words,
       {
-        y: 50,
+        y: 0,
+        opacity: 1,
+
+        duration: 0.5,
+
+        ease: 'power3.out',
+
+        /*
+         * Mỗi 0.14s xuất hiện một từ.
+         */
+        stagger: 0.14,
+      },
+      '-=0.2',
+    );
+
+    /* =====================================================
+       03. CONTENT
+       ===================================================== */
+
+    this.timeline.fromTo(
+      info,
+      {
+        y: 60,
         opacity: 0,
+      },
+      {
+        y: 0,
+        opacity: 1,
         duration: 0.8,
         ease: 'power3.out',
       },
-      '-=0.6',
+      '+=0.15',
     );
 
-    /*
-     * Divider mở rộng từ trái sang phải.
-     */
-    timeline.from(
-      '.about-divider',
+    /* =====================================================
+       04. DIVIDER
+       ===================================================== */
+
+    this.timeline.fromTo(
+      divider,
       {
         scaleX: 0,
-        duration: 0.6,
+      },
+      {
+        scaleX: 1,
+        duration: 0.7,
         ease: 'power3.out',
       },
       '-=0.5',
     );
+
+    /* =====================================================
+       05. DESCRIPTION
+       ===================================================== */
+
+    this.timeline.fromTo(
+      descriptions,
+      {
+        y: 25,
+        opacity: 0,
+      },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.7,
+        stagger: 0.12,
+        ease: 'power3.out',
+      },
+      '-=0.35',
+    );
+
+    /* =====================================================
+       06. CTA
+       ===================================================== */
+
+    this.timeline.fromTo(
+      link,
+      {
+        y: 20,
+        opacity: 0,
+      },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.6,
+        ease: 'power3.out',
+      },
+      '-=0.35',
+    );
+
+    /* =====================================================
+       07. LOGO
+       ===================================================== */
+
+    this.timeline.fromTo(
+      logo,
+      {
+        y: 70,
+        opacity: 0,
+        scale: 0.92,
+      },
+      {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        duration: 1,
+        ease: 'power3.out',
+      },
+      '-=0.35',
+    );
   }
 
   /**
-   * Dọn ScrollTrigger khi component bị destroy.
+   * Cleanup animation khi component bị destroy.
    */
   ngOnDestroy(): void {
-    ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    this.timeline?.kill();
+
+    ScrollTrigger.getAll().forEach((trigger) => {
+      if (trigger.trigger === document.querySelector('#about')) {
+        trigger.kill();
+      }
+    });
   }
 }

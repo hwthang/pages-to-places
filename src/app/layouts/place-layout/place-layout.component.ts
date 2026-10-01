@@ -1,12 +1,23 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  OnDestroy,
+  inject,
+} from '@angular/core';
 
-import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router,
+  RouterLink,
+  RouterOutlet,
+} from '@angular/router';
 
 import { gsap } from 'gsap';
 
-import { PLACES } from '../../data/places';
-import { IPlace } from '../../core/models/place';
 import { NEW_PLACES } from '../../data/new-places';
+import { IPlace } from '../../core/models/place';
 
 @Component({
   selector: 'app-place-layout',
@@ -29,40 +40,45 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
   activeIndex = 0;
 
   /*
-   * Chống wheel / swipe liên tục
+   * =========================================
+   * NAVIGATION LOCK
+   * =========================================
    */
+
   private navigationLocked = false;
 
+  private readonly navigationLockDuration = 500;
+
   /*
-   * Touch
+   * =========================================
+   * TOUCH
+   * =========================================
    */
+
   private touchStartY = 0;
 
   private touchStartX = 0;
 
   private touchStartTime = 0;
 
-  /*
-   * Ngưỡng swipe
-   */
   private readonly swipeThreshold = 45;
 
   /*
-   * Khoảng thời gian tối thiểu
-   * giữa 2 lần chuyển item
+   * =========================================
+   * ROUTE
+   * =========================================
    */
-  private readonly navigationLockDuration = 500;
 
-  /*
-   * Subscription route
-   */
   private routeSubscription?: {
     unsubscribe: () => void;
   };
 
   /*
-   * Lưu overflow body trước khi mở picker
+   * =========================================
+   * BODY SCROLL
+   * =========================================
    */
+
   private previousBodyOverflow = '';
 
   /*
@@ -72,27 +88,65 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
    */
 
   ngAfterViewInit(): void {
-    this.routeSubscription = this.route.firstChild?.paramMap.subscribe((params) => {
-      const slug = params.get('slug');
+    this.routeSubscription =
+      this.route.firstChild?.paramMap.subscribe((params) => {
+        const slug = params.get('slug');
 
-      this.currentSlug = slug ?? '';
+        this.currentSlug = slug ?? '';
 
-      const index = this.places.findIndex((place) => place.slug === slug);
+        const index = this.places.findIndex(
+          (place) => place.slug === this.currentSlug,
+        );
 
-      if (index >= 0) {
-        this.activeIndex = index;
-      }
+        if (index >= 0) {
+          this.activeIndex = index;
+        }
 
-      /*
-       * Route thay đổi khi picker đang mở.
-       * Cập nhật lại vị trí carousel.
-       */
-      if (this.isOpen) {
-        requestAnimationFrame(() => {
-          this.updateItems();
-        });
-      }
-    });
+        /*
+         * Nếu picker đang mở khi route thay đổi,
+         * cập nhật lại carousel.
+         */
+        if (this.isOpen) {
+          requestAnimationFrame(() => {
+            this.updateItems();
+          });
+        }
+      });
+  }
+
+  /*
+   * =========================================
+   * CURRENT / NEXT PLACE
+   * =========================================
+   */
+
+  get currentPlace(): IPlace | undefined {
+    return this.places[this.activeIndex];
+  }
+
+  /**
+   * Địa điểm tiếp theo theo thứ tự trong NEW_PLACES.
+   *
+   * Nếu đang ở địa điểm cuối,
+   * sẽ quay lại địa điểm đầu tiên.
+   */
+  get nextPlace(): IPlace {
+    if (!this.places.length) {
+      return {
+        slug: '',
+        name: '',
+        images: [],
+        contents: [],
+        references: [],
+      } as IPlace;
+    }
+
+    const nextIndex =
+      this.activeIndex >= this.places.length - 1
+        ? 0
+        : this.activeIndex + 1;
+
+    return this.places[nextIndex];
   }
 
   /*
@@ -107,7 +161,7 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
 
   /*
    * =========================================
-   * OPEN
+   * OPEN PICKER
    * =========================================
    */
 
@@ -119,7 +173,7 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
     this.isOpen = true;
 
     /*
-     * Lưu trạng thái overflow hiện tại
+     * Lưu overflow hiện tại
      */
     this.previousBodyOverflow = document.body.style.overflow;
 
@@ -129,7 +183,8 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
     document.body.style.overflow = 'hidden';
 
     requestAnimationFrame(() => {
-      const picker = this.elementRef.nativeElement.querySelector('.place-picker');
+      const picker =
+        this.elementRef.nativeElement.querySelector('.place-picker');
 
       if (picker) {
         picker.focus();
@@ -143,7 +198,7 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
 
   /*
    * =========================================
-   * CLOSE
+   * CLOSE PICKER
    * =========================================
    */
 
@@ -152,38 +207,29 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    const panel = this.elementRef.nativeElement.querySelector('.place-picker-panel');
+    const panel =
+      this.elementRef.nativeElement.querySelector('.place-picker-panel');
 
-    const picker = this.elementRef.nativeElement.querySelector('.place-picker');
+    const picker =
+      this.elementRef.nativeElement.querySelector('.place-picker');
 
-    /*
-     * Không có DOM thì đóng ngay
-     */
     if (!panel || !picker) {
       this.finishClose();
-
       return;
     }
 
     gsap.to(panel, {
       opacity: 0,
-
       scale: 0.96,
-
       y: 20,
-
       duration: 0.35,
-
       ease: 'power2.in',
     });
 
     gsap.to(picker, {
       opacity: 0,
-
       duration: 0.4,
-
       delay: 0.05,
-
       ease: 'power2.in',
 
       onComplete: () => {
@@ -195,14 +241,8 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
   private finishClose(): void {
     this.isOpen = false;
 
-    /*
-     * Khôi phục scroll body
-     */
     document.body.style.overflow = this.previousBodyOverflow;
 
-    /*
-     * Reset lock
-     */
     this.navigationLocked = false;
   }
 
@@ -213,9 +253,11 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
    */
 
   private animateOpen(): void {
-    const picker = this.elementRef.nativeElement.querySelector('.place-picker');
+    const picker =
+      this.elementRef.nativeElement.querySelector('.place-picker');
 
-    const panel = this.elementRef.nativeElement.querySelector('.place-picker-panel');
+    const panel =
+      this.elementRef.nativeElement.querySelector('.place-picker-panel');
 
     if (!picker || !panel) {
       return;
@@ -223,40 +265,28 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
 
     gsap.fromTo(
       picker,
-
       {
         opacity: 0,
       },
-
       {
         opacity: 1,
-
         duration: 0.45,
-
         ease: 'power2.out',
       },
     );
 
     gsap.fromTo(
       panel,
-
       {
         opacity: 0,
-
         scale: 0.96,
-
         y: 30,
       },
-
       {
         opacity: 1,
-
         scale: 1,
-
         y: 0,
-
         duration: 0.7,
-
         ease: 'power3.out',
       },
     );
@@ -264,11 +294,70 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
 
   /*
    * =========================================
-   * NAVIGATION
+   * NEXT PLACE
    * =========================================
    */
 
-  nextPlace(): void {
+  /**
+   * Điều hướng đến địa điểm kế tiếp
+   * theo thứ tự trong NEW_PLACES.
+   *
+   * Ví dụ:
+   *
+   * Eiffel
+   *   ↓
+   * Alexandre III
+   *   ↓
+   * Bercy
+   *   ↓
+   * ...
+   *   ↓
+   * Pont Neuf
+   *   ↓
+   * Eiffel
+   */
+  goToNextPlace(): void {
+    if (!this.places.length) {
+      return;
+    }
+
+    const nextIndex =
+      this.activeIndex >= this.places.length - 1
+        ? 0
+        : this.activeIndex + 1;
+
+    const nextPlace = this.places[nextIndex];
+
+    if (!nextPlace) {
+      return;
+    }
+
+    /*
+     * Đóng picker nếu đang mở.
+     */
+    if (this.isOpen) {
+      this.closePlaces();
+    }
+
+    /*
+     * Reload hoàn toàn page.
+     *
+     * Điều này đảm bảo:
+     * - component được khởi tạo lại
+     * - scroll quay về đầu
+     * - animation của địa điểm mới chạy lại
+     * - không giữ state của địa điểm cũ
+     */
+    window.location.assign(`/place/${nextPlace.slug}`);
+  }
+
+  /*
+   * =========================================
+   * CAROUSEL NAVIGATION
+   * =========================================
+   */
+
+  nextPlaceInPicker(): void {
     if (this.navigationLocked) {
       return;
     }
@@ -320,7 +409,7 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
 
   /*
    * =========================================
-   * SELECT
+   * SELECT PLACE
    * =========================================
    */
 
@@ -338,20 +427,17 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
     this.activeIndex = index;
 
     /*
-     * Cập nhật animation trước
+     * Cập nhật carousel trước khi đóng.
      */
     this.updateItems();
 
     /*
-     * Đóng picker
+     * Đóng picker.
      */
     this.closePlaces();
 
     /*
-     * Navigate Angular.
-     *
-     * Không dùng window.location.assign()
-     * để tránh reload toàn bộ website.
+     * Reload page khi đổi địa điểm.
      */
     window.location.assign(`/place/${selectedPlace.slug}`);
   }
@@ -372,9 +458,17 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
     }
 
     items.forEach((item: HTMLElement, index: number) => {
-      const distance = this.getCircularDistance(index, this.activeIndex, this.places.length);
+      const distance = this.getCircularDistance(
+        index,
+        this.activeIndex,
+        this.places.length,
+      );
 
-      const direction = this.getCircularDirection(index, this.activeIndex, this.places.length);
+      const direction = this.getCircularDirection(
+        index,
+        this.activeIndex,
+        this.places.length,
+      );
 
       const position = distance * direction;
 
@@ -399,7 +493,7 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
       const blur = distance * 1.8;
 
       /*
-       * Perspective
+       * X
        */
       const x = Math.abs(position) * 8;
 
@@ -415,23 +509,14 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
 
       gsap.to(item, {
         y,
-
         x,
-
         scale,
-
         opacity,
-
         rotateX,
-
         filter: `blur(${blur}px)`,
-
         zIndex,
-
         duration: 0.65,
-
         ease: 'power3.out',
-
         overwrite: true,
       });
     });
@@ -443,7 +528,11 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
    * =========================================
    */
 
-  private getCircularDistance(index: number, active: number, length: number): number {
+  private getCircularDistance(
+    index: number,
+    active: number,
+    length: number,
+  ): number {
     const direct = Math.abs(index - active);
 
     const wrapped = length - direct;
@@ -451,16 +540,25 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
     return Math.min(direct, wrapped);
   }
 
-  private getCircularDirection(index: number, active: number, length: number): number {
+  private getCircularDirection(
+    index: number,
+    active: number,
+    length: number,
+  ): number {
     if (index === active) {
       return 0;
     }
 
     const direct = index - active;
 
-    const wrapped = direct > 0 ? direct - length : direct + length;
+    const wrapped =
+      direct > 0
+        ? direct - length
+        : direct + length;
 
-    return Math.abs(direct) <= Math.abs(wrapped) ? Math.sign(direct) : Math.sign(wrapped);
+    return Math.abs(direct) <= Math.abs(wrapped)
+      ? Math.sign(direct)
+      : Math.sign(wrapped);
   }
 
   /*
@@ -472,12 +570,6 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
   onPickerClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
 
-    /*
-     * Chỉ xử lý click trực tiếp
-     * vào container.
-     *
-     * Không ảnh hưởng click item/button.
-     */
     if (target.classList.contains('place-picker')) {
       this.closePlaces();
     }
@@ -495,24 +587,12 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    /*
-     * Không gọi preventDefault().
-     *
-     * Tránh lỗi:
-     *
-     * Unable to preventDefault inside
-     * passive event listener
-     *
-     * Body đã bị overflow:hidden,
-     * picker cũng dùng touch-action:none.
-     */
-
     if (Math.abs(event.deltaY) < 10) {
       return;
     }
 
     if (event.deltaY > 0) {
-      this.nextPlace();
+      this.nextPlaceInPicker();
     } else {
       this.previousPlace();
     }
@@ -537,9 +617,7 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
     }
 
     this.touchStartY = touch.clientY;
-
     this.touchStartX = touch.clientX;
-
     this.touchStartTime = Date.now();
   }
 
@@ -562,42 +640,34 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
     }
 
     const deltaY = this.touchStartY - touch.clientY;
-
     const deltaX = this.touchStartX - touch.clientX;
-
     const duration = Date.now() - this.touchStartTime;
 
     /*
-     * Nếu kéo ngang nhiều hơn kéo dọc
-     * thì bỏ qua.
+     * Nếu kéo ngang nhiều hơn kéo dọc,
+     * bỏ qua gesture.
      */
     if (Math.abs(deltaX) > Math.abs(deltaY)) {
       return;
     }
 
     /*
-     * Swipe quá nhanh / quá nhỏ
+     * Swipe quá nhỏ.
      */
     if (Math.abs(deltaY) < this.swipeThreshold) {
       return;
     }
 
     /*
-     * Tránh gesture quá dài
+     * Gesture quá dài.
      */
     if (duration > 1200) {
       return;
     }
 
     if (deltaY > 0) {
-      /*
-       * Vuốt lên
-       */
-      this.nextPlace();
+      this.nextPlaceInPicker();
     } else {
-      /*
-       * Vuốt xuống
-       */
       this.previousPlace();
     }
   }
@@ -623,16 +693,14 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
         break;
 
       case 'ArrowDown':
-
       case 'PageDown':
         event.preventDefault();
 
-        this.nextPlace();
+        this.nextPlaceInPicker();
 
         break;
 
       case 'ArrowUp':
-
       case 'PageUp':
         event.preventDefault();
 
@@ -670,19 +738,26 @@ export class PlaceLayoutComponent implements AfterViewInit, OnDestroy {
     this.routeSubscription?.unsubscribe();
 
     /*
-     * Khôi phục scroll
+     * Khôi phục scroll.
      */
-    document.body.style.overflow = this.previousBodyOverflow || '';
+    document.body.style.overflow =
+      this.previousBodyOverflow || '';
 
     /*
-     * Kill animation
+     * Kill picker animation.
      */
     const root = this.elementRef.nativeElement;
 
-    gsap.killTweensOf(root.querySelector('.place-picker'));
+    gsap.killTweensOf(
+      root.querySelector('.place-picker'),
+    );
 
-    gsap.killTweensOf(root.querySelector('.place-picker-panel'));
+    gsap.killTweensOf(
+      root.querySelector('.place-picker-panel'),
+    );
 
-    gsap.killTweensOf(root.querySelectorAll('.place-picker-item'));
+    gsap.killTweensOf(
+      root.querySelectorAll('.place-picker-item'),
+    );
   }
 }

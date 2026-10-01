@@ -1,221 +1,104 @@
 @if (place(); as currentPlace) {
 
-  <main class="place-page">
+<main class="place-page">
 
-    <!-- =========================================
+  <!-- =========================================
          HERO
     ========================================== -->
+  <section class="carousel">
 
-    <section class="hero">
+    <div class="carousel-background">
 
-      <div class="hero-content">
-
-        <span class="hero-label">
-          PARIS · {{ currentPlace.slug }}
-        </span>
-
-        <h1>
-          {{ currentPlace.name }}
-        </h1>
-
-      </div>
-
-
-      <div class="hero-image">
-
-        <img
-          [src]="currentPlace.images[0]"
-          [alt]="currentPlace.name"
-        />
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================================
-         CONTENT SECTIONS
-    ========================================== -->
-
-    @for (
-      content of currentPlace.contents;
-      track $index
-    ) {
-
-      <section class="content-section">
-
-        <div class="content-image">
-
-          <img
-            [src]="
-              currentPlace.images[
-                $index % currentPlace.images.length
-              ]
-            "
-            [alt]="content.title"
-          />
-
-        </div>
-
-
-        <div class="content-text">
-
-          <span class="content-number">
-            {{ ($index + 1).toString().padStart(2, '0') }}
-          </span>
-
-          <h2 class="text-5xl">
-            {{ content.title }}
-          </h2>
-
-          <p class="content-description">
-            {{ content.description }}
-          </p>
-
-          <p class="content-body">
-            {{ content.content }}
-          </p>
-
-        </div>
-
-      </section>
-
-    }
-    <!-- =========================================
-         FINAL GALLERY
-    ========================================== -->
-
-<section class="carousel">
-
-  <div class="carousel-background">
-
-    @for (
+      @for (
       image of currentPlace.images;
       track image;
       let i = $index
-    ) {
+      ) {
 
-      <div
-        class="carousel-slide"
-        [class.active]="i === activeImageIndex"
-      >
+      <div class="carousel-slide" [class.active]="i === activeImageIndex">
 
-        <img
-          [src]="image"
-          [alt]="currentPlace.name + ' ' + (i + 1)"
-        />
+        <img [src]="image" [alt]="currentPlace.name + ' ' + (i + 1)" />
 
       </div>
 
-    }
+      }
 
-  </div>
-
-
-  <div class="carousel-overlay"></div>
+    </div>
 
 
-  <!-- CONTENT -->
-
-  <div class="carousel-content">
-
-    <span class="carousel-label">
-      {{ currentPlace.slug }}
-    </span>
-
-    <h2>
-      {{ currentPlace.name }}
-    </h2>
-
-  </div>
+    <div class="carousel-overlay"></div>
 
 
-  <!-- COUNTER -->
+    <!-- CONTENT -->
 
-  <div class="carousel-counter">
+    <div class="carousel-content">
 
-    <span class="current">
-      {{ (activeImageIndex + 1).toString().padStart(2, '0') }}
-    </span>
-
-    <span class="separator">
-      /
-    </span>
-
-    <span>
-      {{ currentPlace.images.length.toString().padStart(2, '0') }}
-    </span>
-
-  </div>
-
-
-  <!-- CONTROLS -->
-
-  <div class="carousel-controls">
-
-    <button
-      type="button"
-      (click)="previousImage()"
-      aria-label="Ảnh trước"
-    >
-      ←
-    </button>
-
-    <button
-      type="button"
-      (click)="nextImage()"
-      aria-label="Ảnh tiếp theo"
-    >
-      →
-    </button>
-
-  </div>
-
-
-  <!-- PROGRESS -->
-
-  <div class="carousel-progress">
-
-    @for (
-      image of currentPlace.images;
-      track image;
-      let i = $index
-    ) {
-
-      <button
-        type="button"
-        class="progress-item"
-        [class.active]="i === activeImageIndex"
-        (click)="goToImage(i)"
-      >
-
-        <span></span>
-
-      </button>
-
-    }
-
-  </div>
-
-</section>
-
-
-    <!-- =========================================
-         END
-    ========================================== -->
-
-    <section class="place-end">
-
-      <span>
-        END OF PLACE
+      <span class="carousel-label">
+        {{ currentPlace.slug }}
       </span>
 
       <h2>
         {{ currentPlace.name }}
       </h2>
 
-    </section>
+    </div>
 
-  </main>
+
+  </section>
+
+
+  <!-- =========================================
+         CONTENT SECTIONS
+    ========================================== -->
+
+  @for (
+  content of currentPlace.contents;
+  track $index
+  ) {
+
+  <section class="content-section">
+
+    <div class="content-image">
+
+      <img [src]="
+              currentPlace.images[
+                $index % currentPlace.images.length
+              ]
+            " [alt]="content.title" />
+
+    </div>
+
+
+    <div class="content-text">
+
+      <span class="content-number">
+        {{ ($index + 1).toString().padStart(2, '0') }}
+      </span>
+
+      <h2 class="text-5xl">
+        {{ content.title }}
+      </h2>
+
+      <p class="content-description">
+        {{ content.description }}
+      </p>
+
+      <p class="content-body">
+        {{ content.content }}
+      </p>
+
+    </div>
+
+  </section>
+
+  }
+  <!-- =========================================
+         FINAL GALLERY
+    ========================================== -->
+
+
+
+
+</main>
 
 }
