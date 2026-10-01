@@ -5,12 +5,13 @@
 }
 
 
-/* =====================================================
+/* =========================================
    ROOT
-===================================================== */
+========================================= */
 
 .intro {
   position: relative;
+
   width: 100%;
   min-height: 100vh;
 
@@ -21,189 +22,114 @@
   justify-content: center;
 
   background: #f8f2e8;
+
   color: #6f5c51;
 }
 
 
-/* =====================================================
+/* =========================================
    BACKGROUND
-===================================================== */
+========================================= */
 
 .intro-background {
   position: absolute;
   inset: 0;
 
   overflow: hidden;
+
   pointer-events: none;
 }
 
 
-/* =====================================================
+/* =========================================
    GRAIN
-===================================================== */
+========================================= */
 
 .intro-grain {
   position: absolute;
   inset: 0;
 
-  opacity: 0.045;
+  z-index: 1;
+
+  opacity: 0.055;
 
   background-image:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E");
-
-  mix-blend-mode: multiply;
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
 }
 
 
-/* =====================================================
+/* =========================================
    ORGANIC STAINS
-===================================================== */
+========================================= */
 
 .stain {
   position: absolute;
 
   border-radius: 50%;
 
-  filter: blur(45px);
+  pointer-events: none;
 
-  background: rgba(139, 113, 101, 0.08);
+  filter: blur(35px);
 
-  transform-origin: center;
+  opacity: 0.35;
+
+  background: rgba(160, 131, 118, 0.18);
 
   will-change: transform;
 }
 
 
-/* lớn */
 .stain-1 {
-  width: 420px;
-  height: 280px;
+  width: 280px;
+  height: 180px;
 
   top: -80px;
-  left: -100px;
+  left: 8%;
 
-  transform: rotate(-25deg);
+  transform: rotate(25deg);
 }
 
 
-/* phải */
 .stain-2 {
-  width: 350px;
-  height: 450px;
-
-  right: -120px;
-  top: 10%;
-
-  transform: rotate(30deg);
-
-  background: rgba(160, 131, 118, 0.07);
-}
-
-
-/* dưới trái */
-.stain-3 {
-  width: 500px;
-  height: 260px;
-
-  left: -180px;
-  bottom: -100px;
-
-  transform: rotate(18deg);
-
-  background: rgba(111, 92, 81, 0.055);
-}
-
-
-/* dưới phải */
-.stain-4 {
-  width: 380px;
-  height: 300px;
-
-  right: -100px;
-  bottom: -80px;
-
-  background: rgba(160, 131, 118, 0.08);
-}
-
-
-/* giữa trái */
-.stain-5 {
-  width: 220px;
+  width: 360px;
   height: 220px;
 
-  left: 8%;
-  top: 45%;
+  right: -100px;
+  top: 25%;
 
-  filter: blur(65px);
-
-  background: rgba(139, 113, 101, 0.045);
+  transform: rotate(-30deg);
 }
 
 
-/* giữa phải */
-.stain-6 {
+.stain-3 {
   width: 260px;
   height: 190px;
 
-  right: 10%;
-  top: 55%;
+  left: -80px;
+  bottom: 10%;
 
-  filter: blur(60px);
-
-  background: rgba(111, 92, 81, 0.05);
+  transform: rotate(20deg);
 }
 
 
-/* =====================================================
-   PAPER WAVES
-===================================================== */
+.stain-4 {
+  width: 320px;
+  height: 180px;
 
-.paper-wave {
-  position: absolute;
+  right: 15%;
+  bottom: -100px;
 
-  width: 70vw;
-  height: 18vw;
-
-  border: 1px solid rgba(139, 113, 101, 0.07);
-
-  border-radius: 50%;
-
-  filter: blur(1px);
-
-  transform: rotate(-18deg);
+  transform: rotate(-20deg);
 }
 
 
-.wave-1 {
-  left: -15vw;
-  top: 20%;
-
-  transform: rotate(-18deg);
-}
-
-
-.wave-2 {
-  right: -20vw;
-  top: 42%;
-
-  transform: rotate(15deg);
-}
-
-
-.wave-3 {
-  left: 15%;
-  bottom: -10%;
-
-  transform: rotate(-8deg);
-}
-
-
-/* =====================================================
+/* =========================================
    CONTENT
-===================================================== */
+========================================= */
 
 .intro-content {
   position: relative;
+
   z-index: 5;
 
   display: flex;
@@ -212,9 +138,9 @@
 }
 
 
-/* =====================================================
+/* =========================================
    LOGO STAGE
-===================================================== */
+========================================= */
 
 .logo-stage {
   position: relative;
@@ -228,12 +154,13 @@
 }
 
 
-/* =====================================================
+/* =========================================
    LOGO CIRCLE
-===================================================== */
+========================================= */
 
 .logo-circle {
   position: relative;
+
   z-index: 10;
 
   width: 300px;
@@ -247,79 +174,61 @@
 
   background: #f8f2e8;
 
-  border: 1px solid rgba(111, 92, 81, 0.2);
+  border: 2px solid rgba(111, 92, 81, 0.25);
 
   box-shadow:
-    0 0 0 14px rgba(111, 92, 81, 0.025),
-    0 0 0 30px rgba(111, 92, 81, 0.012),
-    0 30px 100px rgba(111, 92, 81, 0.12);
+    0 0 0 14px rgba(111, 92, 81, 0.035),
+    0 0 80px rgba(160, 131, 118, 0.20),
+    0 25px 80px rgba(111, 92, 81, 0.14);
 
   will-change: transform;
 }
 
 
-/* =====================================================
+/* =========================================
    LOGO
-===================================================== */
+========================================= */
 
 .intro-logo {
-  width: 250px;
-  height: 250px;
-
-  display: block;
+  width: 245px;
+  height: 245px;
 
   object-fit: contain;
 
+  display: block;
+
   will-change: transform;
 }
 
 
-/* =====================================================
-   DECORATIVE RINGS
-===================================================== */
+/* =========================================
+   OUTER RING
+========================================= */
 
 .logo-ring {
   position: absolute;
 
+  z-index: 7;
+
+  width: 330px;
+  height: 330px;
+
   border-radius: 50%;
+
+  border: 2px solid rgba(160, 131, 118, 0.55);
+
+  box-shadow:
+    0 0 25px rgba(160, 131, 118, 0.12);
 
   pointer-events: none;
 
-  border: 1px solid rgba(160, 131, 118, 0.22);
+  will-change: transform, opacity;
 }
 
 
-.ring-1 {
-  width: 340px;
-  height: 340px;
-
-  z-index: 7;
-}
-
-
-.ring-2 {
-  width: 410px;
-  height: 410px;
-
-  z-index: 4;
-
-  border-color: rgba(160, 131, 118, 0.13);
-}
-
-
-.ring-3 {
-  width: 480px;
-  height: 480px;
-
-  z-index: 2;
-
-  border-color: rgba(160, 131, 118, 0.08);
-}
-
-
-/* =====================================================
+/* =========================================
    RIPPLE
-===================================================== */
+========================================= */
 
 .ripple {
   position: absolute;
@@ -329,11 +238,68 @@
 
   border-radius: 50%;
 
-  border: 1px solid rgba(160, 131, 118, 0.18);
+  border: 2px solid rgba(160, 131, 118, 0.32);
 
   opacity: 0;
 
   pointer-events: none;
+
+  will-change: transform, opacity;
+}
+
+
+.ripple-1 {
+  border-color: rgba(160, 131, 118, 0.42);
+}
+
+
+.ripple-2 {
+  border-color: rgba(160, 131, 118, 0.30);
+}
+
+
+.ripple-3 {
+  border-color: rgba(160, 131, 118, 0.22);
+}
+
+
+.ripple-4 {
+  border-color: rgba(160, 131, 118, 0.15);
+}
+
+
+/* =========================================
+   FLOATING BUBBLES
+========================================= */
+
+.bubble {
+  position: absolute;
+
+  display: block;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  border: 2px solid rgba(139, 113, 101, 0.42);
+
+  background:
+    radial-gradient(
+      circle at 28% 24%,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 255, 255, 0.70) 8%,
+      rgba(220, 199, 188, 0.38) 25%,
+      rgba(160, 131, 118, 0.20) 55%,
+      rgba(160, 131, 118, 0.05) 78%,
+      transparent 100%
+    );
+
+  box-shadow:
+    inset 4px 4px 10px rgba(255, 255, 255, 0.85),
+    inset -5px -6px 12px rgba(139, 113, 101, 0.14),
+    0 8px 28px rgba(111, 92, 81, 0.16);
 
   will-change:
     transform,
@@ -341,14 +307,145 @@
 }
 
 
-/* =====================================================
-   BRAND REMOVED
-===================================================== */
+/* bubble highlight */
+
+.bubble::after {
+  content: '';
+
+  position: absolute;
+
+  width: 25%;
+  height: 25%;
+
+  top: 14%;
+  left: 18%;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.95);
+
+  box-shadow:
+    0 0 8px rgba(255, 255, 255, 0.65);
+
+  filter: blur(0.5px);
+}
 
 
-/* =====================================================
-   FOOTER / LOADING
-===================================================== */
+/* =========================================
+   BUBBLE POSITIONS
+========================================= */
+
+.bubble-1 {
+  width: 34px;
+  height: 34px;
+
+  top: 5%;
+  left: 22%;
+}
+
+
+.bubble-2 {
+  width: 18px;
+  height: 18px;
+
+  top: 16%;
+  right: 15%;
+}
+
+
+.bubble-3 {
+  width: 55px;
+  height: 55px;
+
+  top: 34%;
+  left: -2%;
+}
+
+
+.bubble-4 {
+  width: 25px;
+  height: 25px;
+
+  top: 53%;
+  right: -1%;
+}
+
+
+.bubble-5 {
+  width: 62px;
+  height: 62px;
+
+  bottom: 8%;
+  left: 8%;
+}
+
+
+.bubble-6 {
+  width: 14px;
+  height: 14px;
+
+  bottom: 20%;
+  right: 13%;
+}
+
+
+.bubble-7 {
+  width: 40px;
+  height: 40px;
+
+  top: 1%;
+  right: 34%;
+}
+
+
+.bubble-8 {
+  width: 23px;
+  height: 23px;
+
+  bottom: 2%;
+  right: 29%;
+}
+
+
+.bubble-9 {
+  width: 10px;
+  height: 10px;
+
+  top: 45%;
+  left: 9%;
+}
+
+
+.bubble-10 {
+  width: 30px;
+  height: 30px;
+
+  bottom: 27%;
+  left: 34%;
+}
+
+
+.bubble-11 {
+  width: 45px;
+  height: 45px;
+
+  top: 24%;
+  left: 5%;
+}
+
+
+.bubble-12 {
+  width: 16px;
+  height: 16px;
+
+  top: 68%;
+  right: 25%;
+}
+
+
+/* =========================================
+   LOADING
+========================================= */
 
 .intro-footer {
   position: absolute;
@@ -356,17 +453,13 @@
   z-index: 20;
 
   left: 50%;
-  bottom: 45px;
+  bottom: 35px;
 
   transform: translateX(-50%);
 
-  width: min(520px, calc(100vw - 60px));
+  width: min(480px, calc(100vw - 50px));
 }
 
-
-/* =====================================================
-   LOADING META
-===================================================== */
 
 .loading-meta {
   display: flex;
@@ -374,30 +467,35 @@
   align-items: center;
   justify-content: space-between;
 
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 
   font-size: 9px;
 
+  font-weight: 500;
+
   letter-spacing: 0.28em;
 
-  color: #a08376;
+  color: #8b7165;
 }
 
 
-/* =====================================================
+/* =========================================
    PROGRESS
-===================================================== */
+========================================= */
 
 .intro-progress {
   width: 100%;
 
-  height: 4px;
+  height: 5px;
 
   overflow: hidden;
 
-  background: rgba(111, 92, 81, 0.15);
+  border-radius: 999px;
 
-  border-radius: 10px;
+  background: rgba(111, 92, 81, 0.16);
+
+  box-shadow:
+    inset 0 1px 3px rgba(111, 92, 81, 0.08);
 }
 
 
@@ -409,74 +507,73 @@
 
   transform-origin: left center;
 
-  background: #8b7165;
-
   border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #a08376,
+      #8b7165,
+      #6f5c51
+    );
+
+  box-shadow:
+    0 0 12px rgba(139, 113, 101, 0.35);
 
   will-change: transform;
 }
 
 
-/* =====================================================
+/* =========================================
    MOBILE
-===================================================== */
+========================================= */
 
 @media (max-width: 600px) {
 
   .logo-stage {
-    width: 360px;
-    height: 360px;
+    width: 390px;
+    height: 390px;
   }
 
 
   .logo-circle {
-    width: 220px;
-    height: 220px;
+    width: 230px;
+    height: 230px;
   }
 
 
   .intro-logo {
-    width: 185px;
-    height: 185px;
+    width: 190px;
+    height: 190px;
   }
 
 
-  .ring-1 {
-    width: 250px;
-    height: 250px;
-  }
-
-
-  .ring-2 {
-    width: 310px;
-    height: 310px;
-  }
-
-
-  .ring-3 {
-    width: 350px;
-    height: 350px;
+  .logo-ring {
+    width: 255px;
+    height: 255px;
   }
 
 
   .ripple {
-    width: 220px;
-    height: 220px;
+    width: 230px;
+    height: 230px;
+  }
+
+
+  .bubble-5 {
+    width: 45px;
+    height: 45px;
+  }
+
+
+  .bubble-3 {
+    width: 40px;
+    height: 40px;
   }
 
 
   .intro-footer {
-    width: calc(100vw - 45px);
-    bottom: 30px;
-  }
-
-
-  .intro-progress {
-    height: 4px;
-  }
-
-
-  .stain {
-    filter: blur(35px);
+    width: calc(100vw - 40px);
+    bottom: 25px;
   }
 }
